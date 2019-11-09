@@ -1,12 +1,10 @@
-package app.domain.entities;
+package app.domain.models;
 
 import app.domain.entities.enums.ElectricVehicleTypes;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@MappedSuperclass
-public abstract class ElectricVehicle extends BaseEntity {
+public class ElectricVehicleModel extends BaseModel {
     private String manufacturer;
     private String model;
     private double topSpeed;
@@ -16,10 +14,9 @@ public abstract class ElectricVehicle extends BaseEntity {
     private Date marketRelease;
     private ElectricVehicleTypes electricVehicleTypes;
 
-    public ElectricVehicle() {
+    public ElectricVehicleModel() {
     }
 
-    @Column(name = "manufacturers")
     public String getManufacturer() {
         return manufacturer;
     }
@@ -28,7 +25,6 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.manufacturer = manufacturer;
     }
 
-    @Column(name = "model")
     public String getModel() {
         return model;
     }
@@ -37,7 +33,6 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.model = model;
     }
 
-    @Column(name = "top_speed")
     public double getTopSpeed() {
         return topSpeed;
     }
@@ -46,7 +41,6 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.topSpeed = topSpeed;
     }
 
-    @Column(name = "acceleration")
     public double getAcceleration() {
         return acceleration;
     }
@@ -55,7 +49,6 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.acceleration = acceleration;
     }
 
-    @Column(name = "charging_time")
     public double getChargingTime() {
         return chargingTime;
     }
@@ -64,7 +57,6 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.chargingTime = chargingTime;
     }
 
-    @Column(name = "nominal_range")
     public int getNominalRange() {
         return nominalRange;
     }
@@ -73,18 +65,14 @@ public abstract class ElectricVehicle extends BaseEntity {
         this.nominalRange = nominalRange;
     }
 
-    @Column(name = "market_release")
     public Date getMarketRelease() {
         return marketRelease;
     }
-
 
     public void setMarketRelease(Date marketRelease) {
         this.marketRelease = marketRelease;
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "electric_vehicle_types")
     public ElectricVehicleTypes getElectricVehicleTypes() {
         return electricVehicleTypes;
     }
