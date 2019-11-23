@@ -61,13 +61,13 @@ public class ElectricCarController {
     // @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> getEditElectricCarPage(@PathVariable("id") String id) {
         ElectricCarServiceModel electricCarServiceModel = this.electricCarService.findById(id);
-        ElectricCarBindingModel electricCarBindingModel = this.modelMapper.map(electricCarServiceModel, ElectricCarBindingModel.class);
         Notification notification = new Notification();
 
         if (electricCarServiceModel == null) {
             notification.setMessage("The record was not found");
             return new ResponseEntity<>(notification, HttpStatus.OK);
         }
+        ElectricCarBindingModel electricCarBindingModel = this.modelMapper.map(electricCarServiceModel, ElectricCarBindingModel.class);
 
         return new ResponseEntity<>(electricCarBindingModel, HttpStatus.OK);
     }
