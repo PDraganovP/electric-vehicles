@@ -1,0 +1,16 @@
+.dot {
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right:2px;
+}
+.dotLeftColor{
+  background-color:#c6f212;
+}
+.dotRightColor{
+  background-color:#2449fc;
+}
+th{
+  vertical-align: middle;
+}
