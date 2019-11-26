@@ -37,15 +37,18 @@ public class UserController {
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<?> registerConfirm(@RequestBody UserRegisterBindingModel model) {
+        Message message = new Message();
         if (!model.getPassword().equals(model.getConfirmPassword())) {
-            Message message = new Message();
             message.setMessage("Your password is not  equal with confirm password");
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else if (this.userService.isUserExists(model.getUsername())) {
+            message.setMessage("This username already exists");
             return new ResponseEntity<>(message, HttpStatus.OK);
         }
 
         this.userService.registerUser(this.modelMapper.map(model, UserServiceModel.class));
 
-        Message message = new Message();
+        // Message message = new Message();
         message.setMessage("Your registration is successful");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

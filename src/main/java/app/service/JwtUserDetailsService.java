@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +60,15 @@ public class JwtUserDetailsService implements UserService {
         return this.userRepository.findByUsername(username)
                 .map(u -> this.modelMapper.map(u, UserServiceModel.class))
                 .orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
+    }
+
+    @Override
+    public boolean isUserExists(String username) {
+        User user = this.userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override

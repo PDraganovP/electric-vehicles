@@ -11,6 +11,8 @@ public interface UserService extends UserDetailsService {
 
     Object findUserByUserName(String username);
 
+    boolean isUserExists(String username);
+
     UserServiceModel editUserProfile(UserServiceModel userServiceModel, String oldPassword);
 
     List<UserServiceModel> findAllUsers();
