@@ -76,14 +76,16 @@ public class UserController {
     @PatchMapping("/edit")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> editProfileConfirm(@RequestBody UserEditBindingModel model) {
+        Message message = new Message();
         if (model.getPassword() != null && !model.getPassword().equals(model.getConfirmPassword())) {
-            UserProfileViewModel userProfileViewModel = this.modelMapper.map(model, UserProfileViewModel.class);
-
-            return new ResponseEntity<>(userProfileViewModel, HttpStatus.OK);
+            //  UserProfileViewModel userProfileViewModel = this.modelMapper.map(model, UserProfileViewModel.class);
+            //  return new ResponseEntity<>(userProfileViewModel, HttpStatus.OK);
+            message.setMessage("Your password is not  equal with confirm password");
+            return new ResponseEntity<>(message, HttpStatus.OK);
         }
 
         // this.userService.editUserProfile(this.modelMapper.map(model, UserServiceModel.class), model.getOldPassword());
-        Message message = new Message();
+
         boolean isUserProfileEdited = this.userService.isUserProfileEdited(this.modelMapper.map(model, UserServiceModel.class), model.getOldPassword());
         if (isUserProfileEdited) {
             message.setMessage("You successfully edited your profile");

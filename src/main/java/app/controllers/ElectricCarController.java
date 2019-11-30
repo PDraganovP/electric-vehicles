@@ -9,14 +9,17 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/electricCars")
 public class ElectricCarController {
 
@@ -30,7 +33,7 @@ public class ElectricCarController {
     }
 
     @GetMapping("/show")
-    //  @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> show() {
         List<ElectricCarServiceModel> electricCarServiceModelList = this.electricCarService.findAllOrderedByModel();
         List<ElectricCarRestModel> electricCarRestModelList = electricCarServiceModelList.stream().map(electricCarServiceModel -> this.modelMapper
@@ -41,8 +44,8 @@ public class ElectricCarController {
     }
 
     @PostMapping("/add")
-    //  @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public ResponseEntity<?> addElectricCar(@RequestBody ElectricCarBindingModel electricCarBindingModel) {
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    public ResponseEntity<?> addElectricCar(@Valid @RequestBody ElectricCarBindingModel electricCarBindingModel, BindingResult bindingResult) {
         ElectricCarServiceModel electricCarServiceModel = this.modelMapper.map(electricCarBindingModel, ElectricCarServiceModel.class);
         ElectricCarServiceModel electricCarServiceModelWithId = this.electricCarService.saveElectricCar(electricCarServiceModel);
         electricCarBindingModel.setId(electricCarServiceModelWithId.getId());
@@ -58,7 +61,7 @@ public class ElectricCarController {
     }
 
     @GetMapping("/edit/{id}")
-    // @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> getEditElectricCarPage(@PathVariable("id") String id) {
         ElectricCarServiceModel electricCarServiceModel = this.electricCarService.findById(id);
         Notification notification = new Notification();
@@ -74,7 +77,7 @@ public class ElectricCarController {
 
     @PostMapping("/edit/{id}")
     // @PatchMapping("/edit/{id}")
-    //  @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> editElectricCar(@PathVariable("id") String id, @RequestBody ElectricCarBindingModel electricCarBindingModel) {
         electricCarBindingModel.setId(id);
         ElectricCarServiceModel electricCarServiceModel = this.modelMapper.map(electricCarBindingModel, ElectricCarServiceModel.class);
@@ -91,7 +94,7 @@ public class ElectricCarController {
     }
 
     @PostMapping("/delete/{id}")
-    // @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> deleteElectricCar(@PathVariable("id") String id) {
         boolean isDeleted = this.electricCarService.deleteElectricCarById(id);
         Notification notification = new Notification();
@@ -106,7 +109,7 @@ public class ElectricCarController {
     }
 
     @GetMapping("/compareElectricCars")
-    //  @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getCompareElectricCarsPage() {
         List<ElectricCarRestModel> electricCarsOrderedByName = this.findElectricCarsOrderedByModel();
 

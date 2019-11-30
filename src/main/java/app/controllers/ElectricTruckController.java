@@ -9,14 +9,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/electricTrucks")
 public class ElectricTruckController {
 
@@ -30,7 +31,7 @@ public class ElectricTruckController {
     }
 
     @GetMapping("/show")
-    //  @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> show() {
 
         List<ElectricTruckServiceModel> electricTruckServiceModelList = this.electricTruckService.findAllOrderedByModel();
@@ -43,7 +44,7 @@ public class ElectricTruckController {
     }
 
     @PostMapping("/add")
-    // @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> addElectricTruck(@RequestBody ElectricTruckBindingModel electricTruckBindingModel) {
         ElectricTruckServiceModel electricTruckServiceModel = this.modelMapper.map(electricTruckBindingModel, ElectricTruckServiceModel.class);
         ElectricTruckServiceModel electricTruckServiceModelWithId = this.electricTruckService.saveElectricTruck(electricTruckServiceModel);
@@ -60,7 +61,7 @@ public class ElectricTruckController {
     }
 
     @GetMapping("/edit/{id}")
-    // @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> getEditElectricTruckPage(@PathVariable("id") String id) {
         ElectricTruckServiceModel electricTruckServiceModel = this.electricTruckService.findById(id);
         Notification notification = new Notification();
@@ -75,7 +76,7 @@ public class ElectricTruckController {
     }
 
     @PostMapping("/edit/{id}")
-    //   @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> editElectricTruck(@PathVariable("id") String id, @RequestBody ElectricTruckBindingModel electricTruckBindingModel) {
         electricTruckBindingModel.setId(id);
         ElectricTruckServiceModel electricTruckServiceModel = this.modelMapper.map(electricTruckBindingModel, ElectricTruckServiceModel.class);
@@ -91,7 +92,7 @@ public class ElectricTruckController {
     }
 
     @PostMapping("/delete/{id}")
-    // @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> deleteElectricTruck(@PathVariable("id") String id) {
         boolean isDeleted = this.electricTruckService.deleteElectricTruckById(id);
         Notification notification = new Notification();
@@ -106,7 +107,7 @@ public class ElectricTruckController {
     }
 
     @GetMapping("/compareElectricTrucks")
-    // @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getCompareElectricTrucksPage() {
         List<ElectricTruckRestModel> electricTrucksOrderedByName = this.findElectricTrucksOrderedByName();
 
