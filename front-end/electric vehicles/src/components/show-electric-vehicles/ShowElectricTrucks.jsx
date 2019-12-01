@@ -115,7 +115,7 @@ class ShowElectricTrucks extends React.Component {
                 <td style={{ verticalAlign: 'middle' }}>{vehicle.payloadCapacity}</td>
                 <td style={{ verticalAlign: 'middle' }}>{vehicle.numberOfAxel}</td>
                 {(isAdmin || isModerator) && <td style={{ verticalAlign: 'middle' }}>
-                    <Link to={'/edit-trucks/' + vehicle.id} className="btn btn-primary">Edit</Link>
+                    <Link to={'/edit-truck/' + vehicle.id} className="btn btn-primary">Edit</Link>
                 </td>}
                 {(isAdmin || isModerator) && <td style={{ verticalAlign: 'middle' }}>
                     <button id={vehicle.model + '/' + vehicle.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button></td>}
