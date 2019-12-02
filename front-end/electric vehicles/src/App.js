@@ -15,6 +15,8 @@ import ElectricTruck from './components/electric-trucks/ElectricTruck'
 import UserProfile from './components/users/UserProfile'
 import EditUserProfile from './components/users/EditUser'
 import AllUsers from './components/users/AllUsers'
+import CompareElectricCars from './components/compare-vehicles/CompareElectricCars'
+import CompareElectricTrucks from './components/compare-vehicles/CompareElectricTrucks'
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
              <Route path="/all-users" component={AllUsers} exact />
              <Route path="/profile" component={UserProfile} exact />
              <Route path="/edit-profile" component={EditUserProfile} exact />
+             <Route path='/compare-cars' component={CompareElectricCars} exact />
+             <Route path='/compare-trucks' component={CompareElectricTrucks} exact />
              <Route component={NotFound} />
          </Switch>
        </Router>
