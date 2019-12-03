@@ -1,10 +1,11 @@
 package app.controllers;
 
+import app.domain.models.Notification;
 import app.domain.models.binding.UserEditBindingModel;
 import app.domain.models.binding.UserRegisterBindingModel;
 import app.domain.models.rest.Message;
-import app.domain.models.rest.UserAllViewModel;
-import app.domain.models.rest.UserProfileViewModel;
+import app.domain.models.rest.UserAllRestModel;
+import app.domain.models.rest.UserProfileRestModel;
 import app.domain.models.service.UserServiceModel;
 import app.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -13,9 +14,11 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,24 +36,27 @@ public class UserController {
         this.modelMapper = modelMapper;
     }
 
-    //Have to validate request for empty strings.
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<?> registerConfirm(@RequestBody UserRegisterBindingModel model) {
-        Message message = new Message();
+    public ResponseEntity<?> registerConfirm(@Valid @RequestBody UserRegisterBindingModel model, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
+
         if (!model.getPassword().equals(model.getConfirmPassword())) {
-            message.setMessage("Your password is not  equal with confirm password");
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            notification.setMessage("Your password is not  equal with confirm password");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
         } else if (this.userService.isUserExists(model.getUsername())) {
-            message.setMessage("This username already exists");
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            notification.setMessage("This username already exists");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
         }
 
         this.userService.registerUser(this.modelMapper.map(model, UserServiceModel.class));
 
-        // Message message = new Message();
-        message.setMessage("Your registration is successful");
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        notification.setMessage("Your registration is successful");
+        return new ResponseEntity<>(notification, HttpStatus.OK);
     }
 
     @GetMapping("/profile")
@@ -58,9 +64,9 @@ public class UserController {
     public ResponseEntity<?> profile(Principal principal) {
         String name = principal.getName();
         Object userByUserName = this.userService.findUserByUserName(name);
-        UserProfileViewModel userProfileViewModel = this.modelMapper.map(userByUserName, UserProfileViewModel.class);
+        UserProfileRestModel userProfileRestModel = this.modelMapper.map(userByUserName, UserProfileRestModel.class);
 
-        return new ResponseEntity<>(userProfileViewModel, HttpStatus.OK);
+        return new ResponseEntity<>(userProfileRestModel, HttpStatus.OK);
     }
 
     @GetMapping("/edit")
@@ -68,42 +74,43 @@ public class UserController {
     public ResponseEntity<?> editProfile(Principal principal) {
         String name = principal.getName();
         Object userByUserName = this.userService.findUserByUserName(name);
-        UserProfileViewModel userProfileViewModel = this.modelMapper.map(userByUserName, UserProfileViewModel.class);
+        UserProfileRestModel userProfileRestModel = this.modelMapper.map(userByUserName, UserProfileRestModel.class);
 
-        return new ResponseEntity<>(userProfileViewModel, HttpStatus.OK);
+        return new ResponseEntity<>(userProfileRestModel, HttpStatus.OK);
     }
 
     @PatchMapping("/edit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> editProfileConfirm(@RequestBody UserEditBindingModel model) {
-        Message message = new Message();
-        if (model.getPassword() != null && !model.getPassword().equals(model.getConfirmPassword())) {
-            //  UserProfileViewModel userProfileViewModel = this.modelMapper.map(model, UserProfileViewModel.class);
-            //  return new ResponseEntity<>(userProfileViewModel, HttpStatus.OK);
-            message.setMessage("Your password is not  equal with confirm password");
-            return new ResponseEntity<>(message, HttpStatus.OK);
+    public ResponseEntity<?> editProfileConfirm(@Valid @RequestBody UserEditBindingModel model, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
         }
 
-        // this.userService.editUserProfile(this.modelMapper.map(model, UserServiceModel.class), model.getOldPassword());
+        if (model.getPassword() != null && !model.getPassword().equals(model.getConfirmPassword())) {
+            notification.setMessage("Your password is not  equal with confirm password");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
 
         boolean isUserProfileEdited = this.userService.isUserProfileEdited(this.modelMapper.map(model, UserServiceModel.class), model.getOldPassword());
         if (isUserProfileEdited) {
-            message.setMessage("You successfully edited your profile");
+            notification.setMessage("You successfully edited your profile");
 
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            return new ResponseEntity<>(notification, HttpStatus.OK);
         }
-        message.setMessage("Your user profile was not edited");
+        notification.setMessage("Your user profile was not edited");
 
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        return new ResponseEntity<>(notification, HttpStatus.OK);
     }
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> allUsers(/*ModelAndView modelAndView*/) {
-        List<UserAllViewModel> users = this.userService.findAllUsers()
+    public ResponseEntity<?> allUsers() {
+        List<UserAllRestModel> users = this.userService.findAllUsers()
                 .stream()
                 .map(u -> {
-                    UserAllViewModel user = this.modelMapper.map(u, UserAllViewModel.class);
+                    UserAllRestModel user = this.modelMapper.map(u, UserAllRestModel.class);
                     user.setAuthorities(u.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toSet()));
 
                     return user;
@@ -149,10 +156,10 @@ public class UserController {
         boolean isDeleted = this.userService.deleteUserById(id);
 
         if (!isDeleted) {
-            Message message = new Message();
-            message.setMessage("User was not deleted");
+            Notification notification = new Notification();
+            notification.setMessage("User was not deleted");
 
-            return new ResponseEntity<>(message, HttpStatus.OK);
+            return new ResponseEntity<>(notification, HttpStatus.OK);
         }
 
         Message message = new Message();

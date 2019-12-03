@@ -40,16 +40,21 @@ public class ElectricCarController {
                 .map(electricCarServiceModel, ElectricCarRestModel.class))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(electricCarServiceModelList, HttpStatus.OK);
+        return new ResponseEntity<>(electricCarRestModelList, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ResponseEntity<?> addElectricCar(@Valid @RequestBody ElectricCarBindingModel electricCarBindingModel, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
+
         ElectricCarServiceModel electricCarServiceModel = this.modelMapper.map(electricCarBindingModel, ElectricCarServiceModel.class);
         ElectricCarServiceModel electricCarServiceModelWithId = this.electricCarService.saveElectricCar(electricCarServiceModel);
         electricCarBindingModel.setId(electricCarServiceModelWithId.getId());
-        Notification notification = new Notification();
 
         if (electricCarServiceModelWithId == null) {
             notification.setMessage("New record is not added");
@@ -70,19 +75,23 @@ public class ElectricCarController {
             notification.setMessage("The record was not found");
             return new ResponseEntity<>(notification, HttpStatus.OK);
         }
-        ElectricCarBindingModel electricCarBindingModel = this.modelMapper.map(electricCarServiceModel, ElectricCarBindingModel.class);
+        ElectricCarRestModel electricCarRestModel = this.modelMapper.map(electricCarServiceModel, ElectricCarRestModel.class);
 
-        return new ResponseEntity<>(electricCarBindingModel, HttpStatus.OK);
+        return new ResponseEntity<>(electricCarRestModel, HttpStatus.OK);
     }
 
     @PostMapping("/edit/{id}")
-    // @PatchMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public ResponseEntity<?> editElectricCar(@PathVariable("id") String id, @RequestBody ElectricCarBindingModel electricCarBindingModel) {
+    public ResponseEntity<?> editElectricCar(@PathVariable("id") String id, @Valid @RequestBody ElectricCarBindingModel electricCarBindingModel, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
+
         electricCarBindingModel.setId(id);
         ElectricCarServiceModel electricCarServiceModel = this.modelMapper.map(electricCarBindingModel, ElectricCarServiceModel.class);
         boolean isEdited = this.electricCarService.editElectricCar(electricCarServiceModel);
-        Notification notification = new Notification();
 
         if (isEdited) {
             notification.setMessage("The record was edited");

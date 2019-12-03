@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,16 +42,21 @@ public class ElectricTruckController {
                         .map(electricTruckServiceModel, ElectricTruckRestModel.class)).collect(Collectors.toList());
 
 
-        return new ResponseEntity<>(electricTruckServiceModelList, HttpStatus.OK);
+        return new ResponseEntity<>(electricTruckRestModelList, HttpStatus.OK);
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public ResponseEntity<?> addElectricTruck(@RequestBody ElectricTruckBindingModel electricTruckBindingModel) {
+    public ResponseEntity<?> addElectricTruck(@Valid @RequestBody ElectricTruckBindingModel electricTruckBindingModel, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
+
         ElectricTruckServiceModel electricTruckServiceModel = this.modelMapper.map(electricTruckBindingModel, ElectricTruckServiceModel.class);
         ElectricTruckServiceModel electricTruckServiceModelWithId = this.electricTruckService.saveElectricTruck(electricTruckServiceModel);
         electricTruckBindingModel.setId(electricTruckServiceModelWithId.getId());
-        Notification notification = new Notification();
 
         if (electricTruckServiceModelWithId == null) {
             notification.setMessage("New record is not added");
@@ -70,19 +77,25 @@ public class ElectricTruckController {
             notification.setMessage("The record was not found");
             return new ResponseEntity<>(notification, HttpStatus.OK);
         }
-        ElectricTruckBindingModel electricTruckBindingModel = this.modelMapper.map(electricTruckServiceModel, ElectricTruckBindingModel.class);
+        ElectricTruckRestModel electricTruckRestModel = this.modelMapper.map(electricTruckServiceModel, ElectricTruckRestModel.class);
 
-        return new ResponseEntity<>(electricTruckBindingModel, HttpStatus.OK);
+        return new ResponseEntity<>(electricTruckRestModel, HttpStatus.OK);
     }
 
     @PostMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
-    public ResponseEntity<?> editElectricTruck(@PathVariable("id") String id, @RequestBody ElectricTruckBindingModel electricTruckBindingModel) {
+    public ResponseEntity<?> editElectricTruck(@PathVariable("id") String id, @Valid @RequestBody ElectricTruckBindingModel electricTruckBindingModel, BindingResult bindingResult) {
+        Notification notification = new Notification();
+        if (bindingResult.hasErrors()) {
+            notification.setMessage("Please, enter valid data");
+            return new ResponseEntity<>(notification, HttpStatus.OK);
+        }
+
         electricTruckBindingModel.setId(id);
         ElectricTruckServiceModel electricTruckServiceModel = this.modelMapper.map(electricTruckBindingModel, ElectricTruckServiceModel.class);
 
         boolean isEdited = this.electricTruckService.editElectricTruck(electricTruckServiceModel);
-        Notification notification = new Notification();
+
         if (isEdited) {
             notification.setMessage("The record was edited");
             return new ResponseEntity<>(notification, HttpStatus.OK);

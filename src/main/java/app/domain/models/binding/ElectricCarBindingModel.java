@@ -1,6 +1,9 @@
 package app.domain.models.binding;
 
 import app.domain.models.ElectricVehicleModel;
+import app.validation.DecimalNumberConstraint;
+
+import static app.AnnotationConstants.*;
 
 public class ElectricCarBindingModel extends ElectricVehicleModel {
     private int passengers;
@@ -10,6 +13,7 @@ public class ElectricCarBindingModel extends ElectricVehicleModel {
     public ElectricCarBindingModel() {
     }
 
+    @DecimalNumberConstraint(min = MIN_PASSENGERS, max = MAX_PASSENGERS, message = INPUT_IS_NOT_CORRECT)
     public int getPassengers() {
         return passengers;
     }

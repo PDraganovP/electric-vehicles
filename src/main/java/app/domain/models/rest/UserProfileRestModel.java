@@ -1,10 +1,10 @@
 package app.domain.models.rest;
 
-public class UserProfileViewModel {
+public class UserProfileRestModel {
     private String username;
     private String email;
 
-    public UserProfileViewModel() {
+    public UserProfileRestModel() {
     }
 
     public String getUsername() {

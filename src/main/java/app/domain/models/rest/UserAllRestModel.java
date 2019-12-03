@@ -2,7 +2,7 @@ package app.domain.models.rest;
 
 import java.util.Set;
 
-public class UserAllViewModel {
+public class UserAllRestModel {
 
     private String id;
     private String username;
@@ -11,7 +11,7 @@ public class UserAllViewModel {
 
     private Set<String> authorities;
 
-    public UserAllViewModel() {
+    public UserAllRestModel() {
     }
 
     public String getId() {

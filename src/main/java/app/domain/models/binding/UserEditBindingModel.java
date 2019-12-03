@@ -1,5 +1,12 @@
 package app.domain.models.binding;
 
+import app.validation.TextConstraint;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import static app.AnnotationConstants.*;
+
 public class UserEditBindingModel {
     private String username;
     private String oldPassword;
@@ -10,6 +17,8 @@ public class UserEditBindingModel {
     public UserEditBindingModel() {
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getUsername() {
         return username;
     }
@@ -18,6 +27,8 @@ public class UserEditBindingModel {
         this.username = username;
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getOldPassword() {
         return oldPassword;
     }
@@ -26,6 +37,8 @@ public class UserEditBindingModel {
         this.oldPassword = oldPassword;
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getPassword() {
         return password;
     }
@@ -34,6 +47,8 @@ public class UserEditBindingModel {
         this.password = password;
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getConfirmPassword() {
         return confirmPassword;
     }
@@ -42,6 +57,8 @@ public class UserEditBindingModel {
         this.confirmPassword = confirmPassword;
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @Email(message = INPUT_IS_NOT_CORRECT)
     public String getEmail() {
         return email;
     }
