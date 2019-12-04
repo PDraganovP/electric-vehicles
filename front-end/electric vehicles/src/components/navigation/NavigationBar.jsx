@@ -24,18 +24,18 @@ class NavigationBar extends React.Component {
                             <Link to="/show-trucks" className="nav-link">Show trucks</Link>
                             {(isAdmin || isModerator) && <Link to="/add-truck" className="nav-link">Add Truck</Link>}
                         </NavDropdown>}
+                        {isUserLoggedIn && <NavDropdown title="compare" id="basic-nav-dropdown">
+                            <Link to="/compare-cars" className="nav-link">Cars</Link>
+                            <Link to="/compare-trucks" className="nav-link">Trucks</Link>
+                        </NavDropdown>}
+                        {(isUserLoggedIn) && <NavDropdown title="User" id="user-dropdown">
+                            {(isUserLoggedIn) && <Link to="/profile" className="nav-link">Profile</Link>}
+                            {(isUserLoggedIn) && <Link to="/edit-profile" className="nav-link">Edit profile</Link>}
+                            {(isUserLoggedIn && isAdmin) && <Link to="/all-users" className="nav-link">All users</Link>}
+                        </NavDropdown>}
                     </Nav>
-                    {isUserLoggedIn && <NavDropdown title="compare" id="basic-nav-dropdown">
-                        <Link to="/compare-cars" className="nav-link">Cars</Link>
-                        <Link to="/compare-trucks" className="nav-link">Trucks</Link>
-                    </NavDropdown>}
-                    {(isUserLoggedIn) && <NavDropdown title="User" id="user-dropdown">
-                        {(isUserLoggedIn) && <Link to="/profile" className="nav-link">Profile</Link>}
-                        {(isUserLoggedIn) && <Link to="/edit-profile" className="nav-link">Edit profile</Link>}
-                        {(isUserLoggedIn && isAdmin) && <Link to="/all-users" className="nav-link">All users</Link>}
-                    </NavDropdown>}
                     <Nav className="ml-auto" >
-                        {(isUserLoggedIn) && <Link to="/logout" className="nav-link justify-content-end" onClick={AuthenticationService.logout}>Log out</Link>}
+                        {(isUserLoggedIn) && <Link to="/logout" className="nav-link justify-content-end" onClick={AuthenticationService.logout}>Logout</Link>}
                         {(!isUserLoggedIn) && <Link to="/register" className="nav-link">Register</Link>}
                         {(!isUserLoggedIn) && <Link to="/login" className="nav-link">Login</Link>}
                     </Nav>

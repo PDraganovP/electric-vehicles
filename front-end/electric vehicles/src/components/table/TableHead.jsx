@@ -2,10 +2,10 @@ import React from 'react';
 
 const TableHead = (props) => {
     let headCells = props.cells.map((cell, index) =>
-        <th style={{ verticalAlign: 'middle' }} key={index + cell}>{cell}</th>)
+        <th key={index + cell}>{cell}</th>)
     return (
         <thead >
-            <tr >
+            <tr className='data-row'>
                 {headCells}
             </tr>
         </thead>

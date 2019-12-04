@@ -1,20 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-//import ElectricTruckDataService from '../../service/ElectricTruckDataService';
 import AuthenticationService from '../../service/AuthenticationService'
 import { getDate } from './Utils';
-import Table from './Table';
-import TableHead from './TableHead';
-import TableBody from './TableBody';
-import ModalComponent from '../ModalComponent';
-
+import Table from '../table/Table';
+import TableHead from '../table/TableHead';
+import TableBody from '../table/TableBody';
+import ModalComponent from '../modal/ModalComponent';
+import '../../styles/common-styles.css';
 
 class ShowElectricTrucks extends React.Component {
     constructor(props) {
         super(props);
         this.state = ({
             vehicles: [],
-
             message: '',
             model: '',
             show: false,
@@ -104,20 +102,20 @@ class ShowElectricTrucks extends React.Component {
 
         let { vehicles } = this.state;
         let vehicleRow = vehicles.map((vehicle, index) =>
-            <tr key={vehicle.id}>
-                <td style={{ verticalAlign: 'middle' }}>{index + 1}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.manufacturer}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.model}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.electricVehicleTypes.type}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.topSpeed}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.nominalRange}</td>
-                <td style={{ verticalAlign: 'middle' }}>{getDate(vehicle.marketRelease)}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.payloadCapacity}</td>
-                <td style={{ verticalAlign: 'middle' }}>{vehicle.numberOfAxel}</td>
-                {(isAdmin || isModerator) && <td style={{ verticalAlign: 'middle' }}>
+            <tr key={vehicle.id} className='data-row'>
+                <td>{index + 1}</td>
+                <td>{vehicle.manufacturer}</td>
+                <td>{vehicle.model}</td>
+                <td>{vehicle.electricVehicleTypes.type}</td>
+                <td>{vehicle.topSpeed}</td>
+                <td>{vehicle.nominalRange}</td>
+                <td>{getDate(vehicle.marketRelease)}</td>
+                <td>{vehicle.payloadCapacity}</td>
+                <td>{vehicle.numberOfAxel}</td>
+                {(isAdmin || isModerator) && <td>
                     <Link to={'/edit-truck/' + vehicle.id} className="btn btn-primary">Edit</Link>
                 </td>}
-                {(isAdmin || isModerator) && <td style={{ verticalAlign: 'middle' }}>
+                {(isAdmin || isModerator) && <td>
                     <button id={vehicle.model + '/' + vehicle.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button></td>}
             </tr>
         )
@@ -128,7 +126,7 @@ class ShowElectricTrucks extends React.Component {
             cells = cells.concat(actions)
         }
         return (
-            <div className='mx-auto w-75'>
+            <div className='mx-auto px-5'>
                 <Table tableHeading='Electric trucks'>
                     <TableHead cells={cells} />
                     <TableBody>

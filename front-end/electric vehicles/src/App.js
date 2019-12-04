@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import NavigationBar from './components/navigation/NavigationBar';
 import Index from './components/common-components/Index'
 import HomePage from './components/common-components/HomePage'
 import Register from './components/register/Register'
@@ -22,6 +23,7 @@ function App() {
   return (
    <React.Fragment>
        <Router>
+         <NavigationBar />
          <Switch>
              <Route path='/' component={Index} exact />
              <Route path='/home' component={HomePage} exact />

@@ -1,0 +1,4 @@
+.table .data-row td,
+.table .data-row th {
+  vertical-align: middle;
+}

@@ -1,7 +1,10 @@
 import React from 'react';
-//import AuthenticationService from '../../service/AuthenticationService';
 import AuthenticationService from '../../service/AuthenticationService';
-import ModalComponent from '../ModalComponent';
+import Table from '../table/Table';
+import TableHead from '../table/TableHead';
+import TableBody from '../table/TableBody';
+import ModalComponent from '../modal/ModalComponent';
+import '../../styles/common-styles.css';
 
 class AllUsers extends React.Component {
     constructor(props) {
@@ -42,10 +45,8 @@ class AllUsers extends React.Component {
     changeAccess = (event) => {
         let buttonId = event.target.id;
         let role = buttonId.split('-')[0];
-        //   let out = event.target.outerHTML;
         let userId = event.target.parentNode.id;
         console.log('role', role);
-        //   console.log('outer', out);
         console.log('userId', userId);
         let url = 'http://localhost:8080/users/set-' + role + '/' + userId;
 
@@ -53,16 +54,6 @@ class AllUsers extends React.Component {
             .then(response => {
                 let message = response.message;
                 if (message !== undefined) {
-                    /*  let tdElement = document.getElementById(userId);
- 
-                     let selector = ':not(#' + buttonId + ')';
- 
-                     //tdElement.querySelectorAll("button"+selector)[0].style.color = 'green';
-                     let buttons = tdElement.querySelectorAll("button" + selector);
-                     for (let i = 0; i < buttons.length; i++) {
-                         buttons[i].style.display = '';
-                     }
-                     document.getElementById(buttonId).style.display = "none"; */
                     this.getAllUsers();
 
                 }
@@ -72,8 +63,6 @@ class AllUsers extends React.Component {
     }
 
     deleteUser = (event) => {
-        //  let buttonId = event.target.id;
-        //let userId = buttonId.split('/')[1];
         let userId = this.state.delete;
         let url = 'http://localhost:8080/users/delete/' + userId;//+ role + '/'
 
@@ -113,7 +102,6 @@ class AllUsers extends React.Component {
         });
     };
     handleShow = (event) => {
-        //  let id = event.target.id;
         let buttonId = event.target.id;
         let userId = buttonId.split('/')[1];
         let username = buttonId.split('/')[0];
@@ -137,49 +125,39 @@ class AllUsers extends React.Component {
             record: this.state.username,
             handleDelete: this.handleDelete,
             handleClose: this.handleClose,
-            //   handleShow: this.handleShow
         }
 
-        let center = 'align-middle';
         let { users } = this.state;
         let usersRows = users.map((user, index) =>
-            <tr key={user.id}>
-                <td className={center}>{index + 1}</td>
-                <td className={center}>{user.username}</td>
-                <td className={center}>{user.email}</td>
-                <td className={"role " + center}>{this.findRole(user)}</td>
-                <td className={center} id={user.id}>
+            <tr key={user.id} className='data-row'>
+                <td>{index + 1}</td>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{this.findRole(user)}</td>
+                <td id={user.id}>
                     {!(this.findRole(user) === 'admin') && <button id={"admin-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Admin</button>}
                     {!(this.findRole(user) === 'moderator') && <button id={"moderator-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Moderator</button>}
                     {!(this.findRole(user) === 'user') && <button id={"user-" + index} type="button" className="btn btn-primary" onClick={this.changeAccess}>User</button>}
                 </td>
                 <td>
-                    {/* {this.deleteUser}  !(this.findRole(user) === 'user') &&  */<button id={user.username + "/" + user.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button>}
+                    <button id={user.username + "/" + user.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button>
                 </td>
             </tr>
         )
+        let cells = ['#', 'Username ', 'Email ', 'User role', 'Change user role', 'Delete'];
+
         return (
             <div className="mx-auto w-75">
-                <h1 className="text-center">All users</h1>
-                <table className="table text-center">
-                    <thead >
-                        <tr>
-                            <th>#</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>User role</th>
-                            <th>Change user role</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <Table tableHeading='All users' >
+                    <TableHead cells={cells} />
+                    <TableBody>
                         {usersRows}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
                 <ModalComponent {...props} />
                 <h4 className='text-center'>{this.state.message}</h4>
             </div>
         )
     }
 }
-export default AllUsers 
+export default AllUsers
