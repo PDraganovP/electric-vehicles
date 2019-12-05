@@ -133,7 +133,9 @@ class ElectricCar extends React.Component {
                 }
             })
         console.log(values);
-        document.getElementById('electric-car-form').reset();
+        if (id === undefined) {
+            document.getElementById('electric-car-form').reset();
+        }
     }
 
     render() {

@@ -114,7 +114,7 @@ class ShowElectricCars extends React.Component {
                 <td>{vehicle.autonomous ? 'Yes' : 'No'}</td>
                 <td>{getDate(vehicle.marketRelease)}</td>
                 {(isAdmin || isModerator) && <td>
-                    <Link to={'/edit-cars/' + vehicle.id} className="btn btn-primary">Edit</Link></td>}
+                    <Link to={'/edit-car/' + vehicle.id} className="btn btn-primary">Edit</Link></td>}
                 {(isAdmin || isModerator) && <td>
                     <button id={vehicle.model + '/' + vehicle.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button></td>}
             </tr>

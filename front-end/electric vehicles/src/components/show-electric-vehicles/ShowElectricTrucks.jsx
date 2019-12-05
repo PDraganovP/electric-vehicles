@@ -75,7 +75,7 @@ class ShowElectricTrucks extends React.Component {
         let model = buttonId.split('/')[0];
         this.setState({
             show: true,
-            delete: truckId,
+            deleteId: truckId,
             model: model
         });
 

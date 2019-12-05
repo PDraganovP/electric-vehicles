@@ -111,7 +111,9 @@ class ElectricTruck extends React.Component {
                 }
             })
         console.log(values);
-        document.getElementById('electric-truck-form').reset();
+        if (id === undefined) {
+            document.getElementById('electric-truck-form').reset();
+        }
     }
 
     render() {
