@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import AuthenticationService from '../service/AuthenticationService';
+import AuthenticationService from '../../service/AuthenticationService';
 
 class NavigationBar extends React.Component {
     render() {
