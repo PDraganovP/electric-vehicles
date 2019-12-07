@@ -1,23 +1,20 @@
 import * as Yup from 'yup';
+import { ValidationConstants as vc } from '../../application-constants/AppConstants';
 
 export const formSchema = Yup.object().shape({
-    /*  username: Yup.string()
-         .min(3, 'This has to be greater than ')
-         .max(30, 'This field has not to be greater than')
-         .required('This field is required'), */
     password: Yup.string()
-        .min(3, 'This has to be greater than ')
-        .max(30, 'This field has not to be greater than')
-        .required('This field is required'),
+        .min(vc.TEXT_INPUT_MIN_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_LESS_THAN + vc.TEXT_INPUT_MIN_LENGTH)
+        .max(vc.TEXT_INPUT_MAX_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_GREATER_THAN + vc.TEXT_INPUT_MAX_LENGTH)
+        .required(vc.FIELD_IS_REQUIRED),
     oldPassword: Yup.string()
-        .min(3, 'This has to be greater than ')
-        .max(30, 'This field has not to be greater than')
-        .required('This field is required'),
+        .min(vc.TEXT_INPUT_MIN_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_LESS_THAN + vc.TEXT_INPUT_MIN_LENGTH)
+        .max(vc.TEXT_INPUT_MAX_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_GREATER_THAN + vc.TEXT_INPUT_MAX_LENGTH)
+        .required(vc.FIELD_IS_REQUIRED),
     confirmPassword: Yup.string()
-        .min(3, 'This has to be greater than ')
-        .max(30, 'This field has not to be greater than')
-        .required('This field is required'),
+        .min(vc.TEXT_INPUT_MIN_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_LESS_THAN + vc.TEXT_INPUT_MIN_LENGTH)
+        .max(vc.TEXT_INPUT_MAX_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_GREATER_THAN + vc.TEXT_INPUT_MAX_LENGTH)
+        .required(vc.FIELD_IS_REQUIRED),
     email: Yup.string()
         .email()
-        .required('This field is required')
+        .required(vc.FIELD_IS_REQUIRED)
 })

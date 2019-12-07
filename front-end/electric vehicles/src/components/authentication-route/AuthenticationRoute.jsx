@@ -11,13 +11,12 @@ class AuthenticationRoute extends React.Component {
         let isModerator = AuthenticationService.isModerator();
         if (admin && isAdmin) {
             return true
-        } else if (moderator && isModerator || isAdmin) {
+        } else if ((moderator && isModerator) || isAdmin) {
             return true
         } else {
             return false
         }
     }
-
 
     render() {
         const { anonymous, permitAllUsers } = this.props;

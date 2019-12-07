@@ -1,34 +1,35 @@
 import * as Yup from 'yup';
+import { ValidationConstants as vc } from '../../application-constants/AppConstants';
 
 export const formSchema = Yup.object().shape({
     manufacturer: Yup.string()
-        .min(3, 'This field has not to be less than 3')
-        .max(50, 'This field has not to be greater than 50')
-        .required('This field is required'),
+        .min(vc.TEXT_INPUT_MIN_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_LESS_THAN + vc.TEXT_INPUT_MIN_LENGTH)
+        .max(vc.TEXT_INPUT_MAX_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_GREATER_THAN + vc.TEXT_INPUT_MAX_LENGTH)
+        .required(vc.FIELD_IS_REQUIRED),
     model: Yup.string()
-        .min(3, 'This field has not to be less than 3')
-        .max(50, 'This field has not to be greater than 50')
-        .required('This field is required'),
+        .min(vc.TEXT_INPUT_MIN_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_LESS_THAN + vc.TEXT_INPUT_MIN_LENGTH)
+        .max(vc.TEXT_INPUT_MAX_LENGTH, vc.FIELD_LENGTH_HAS_NOT_TO_BE_GREATER_THAN + vc.TEXT_INPUT_MAX_LENGTH)
+        .required(vc.FIELD_IS_REQUIRED),
     electricVehicleType: Yup.string()
-        .required('This field is required'),
-    topSpeed: Yup.number().typeError('Please enter number')
-        .min(10, 'This field has not to be less than 10')
-        .max(500, 'This field has not to be greater than 500'),
-    acceleration: Yup.number().typeError('Please enter number')
-        .min(1, 'This field has not to be less than 1')
-        .max(50, 'This field has not to be greater than 50'),
-    chargingTime: Yup.number().typeError('Please enter number')
-        .min(1, 'This field has to be greater than 1')
-        .max(300, 'This field has not to be greater than 300')
-        .required('This field is required'),
-    nominalRange: Yup.number().typeError('Please enter number')
-        .min(20, 'This field has not to be less than 20')
-        .max(1000, 'This field has not to be greater than 1000'),
+        .required(vc.FIELD_IS_REQUIRED),
+    topSpeed: Yup.number().typeError(vc.PLEASE_ENTER_NUMBER)
+        .min(vc.MIN_TOP_SPEED, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_TOP_SPEED)
+        .max(vc.MAX_TOP_SPEED, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_TOP_SPEED),
+    acceleration: Yup.number().typeError(vc.PLEASE_ENTER_NUMBER)
+        .min(vc.MIN_ACCELERATION, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_ACCELERATION)
+        .max(vc.MAX_ACCELERATION, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_ACCELERATION),
+    chargingTime: Yup.number().typeError(vc.PLEASE_ENTER_NUMBER)
+        .min(vc.MIN_CHARGING_TIME, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_CHARGING_TIME)
+        .max(vc.MAX_CHARGING_TIME, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_CHARGING_TIME)
+        .required(vc.FIELD_IS_REQUIRED),
+    nominalRange: Yup.number().typeError(vc.PLEASE_ENTER_NUMBER)
+        .min(vc.MIN_NOMINAL_RANGE, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_NOMINAL_RANGE)
+        .max(vc.MAX_NOMINAL_RANGE, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_NOMINAL_RANGE),
     payloadCapacity: Yup.number()
-        .min(100, 'This field has not to be less than 100')
-        .max(50000, 'This field has not to be greater than 50 000'),
+        .min(vc.MIN_PAYLOAD_CAPACITY, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_PAYLOAD_CAPACITY)
+        .max(vc.MAX_PAYLOAD_CAPACITY, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_PAYLOAD_CAPACITY),
     numberOfAxel: Yup.number()
-        .min(1, 'This field has not to be less than 1')
-        .max(8, 'This field has not to be greater than 8'),
+        .min(vc.MIN_NUMBER_OF_AXEL, vc.FIELD_VALUE_HAS_NOT_TO_BE_LESS_THAN + vc.MIN_NUMBER_OF_AXEL)
+        .max(vc.MAX_NUMBER_OF_AXEL, vc.FIELD_VALUE_HAS_NOT_TO_BE_GREATER_THAN + vc.MAX_NUMBER_OF_AXEL),
 })
 

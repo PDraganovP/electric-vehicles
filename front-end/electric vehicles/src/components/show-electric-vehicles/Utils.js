@@ -8,4 +8,24 @@ const getDate = (dateAndTime) => {
     return 'No info'
 }
 
-export { getDate }
+const getCarsTableHeadCells = (isModerator, isAdmin) => {
+    let cells = ['#', 'Manufacturer ', 'Model ', 'Electric vehicle type', 'Top speed',
+        'Nominal range', 'Autonomous', 'Market release'];
+    let actions = ['Edit ', 'Delete'];
+    if (isModerator || isAdmin) {
+        cells = cells.concat(actions)
+    }
+    return cells
+}
+
+const getTrucksTableHeadCells = (isModerator, isAdmin) => {
+    let cells = ['#', 'Manufacturer ', 'Model ', 'Electric vehicle type', 'Top speed',
+        'Nominal range', 'Market release', 'Payload capacity', 'Number of axel'];
+    let actions = ['Edit ', 'Delete'];
+    if (isModerator || isAdmin) {
+        cells = cells.concat(actions)
+    }
+    return cells
+}
+
+export { getDate, getCarsTableHeadCells, getTrucksTableHeadCells }

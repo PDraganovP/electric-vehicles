@@ -117,7 +117,11 @@ class ElectricTruck extends React.Component {
     }
 
     render() {
-        let { formInitialValues } = this.state;
+        let { formInitialValues, electricVehicleTypes } = this.state;
+        const options = electricVehicleTypes.map(electricVehicleType =>
+            <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}
+            </option>
+        )
 
         return (
             <div className="mb-3">
@@ -127,8 +131,7 @@ class ElectricTruck extends React.Component {
                         initialValues={formInitialValues}
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
-                        validateOnBlur={false}
-                        //validate={this.validate}
+                        validateOnBlur={true}
                         validationSchema={formSchema}
                         enableReinitialize={true}
                     >
@@ -143,12 +146,7 @@ class ElectricTruck extends React.Component {
                             <DatePickerInputField name="marketRelease" label="Choose date" />
                             <TextInputField placeholder="Enter payload capacity" label="Payload capacity" name="payloadCapacity" />
                             <TextInputField placeholder="Enter number of axel" label="Number of axel" name="numberOfAxel" />
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options=
-                                {this.state.electricVehicleTypes.map(electricVehicleType =>
-                                    <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}</option>
-                                )}
-                            />
-
+                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
                             <h3 className='text-center'>{this.state.message}</h3>
                             <button className="btn btn-success" type="submit">Save</button>
                         </Form>

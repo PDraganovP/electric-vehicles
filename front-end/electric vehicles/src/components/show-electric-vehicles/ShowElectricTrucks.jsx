@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import AuthenticationService from '../../service/AuthenticationService'
-import { getDate } from './Utils';
+import { getDate, getTrucksTableHeadCells } from './Utils';
 import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
@@ -40,14 +40,14 @@ class ShowElectricTrucks extends React.Component {
             ).catch(error => console.log('Error', error))
     }
 
-    deleteTruck = (event) => {
+    deleteTruck = () => {
 
         let truckId = this.state.deleteId;
         let url = 'http://localhost:8080/electricTrucks/delete/' + truckId;
 
         AuthenticationService.postData('', url)
             .then(response => {
-                let successMessage = 'The record was deleted'//'You successfully deleted the car';
+                let successMessage = 'The record was deleted'
                 let message = response.message;
                 if (successMessage === message) {
                     this.setState({
@@ -69,8 +69,7 @@ class ShowElectricTrucks extends React.Component {
         });
     };
     handleShow = (event) => {
-        //  let id = event.target.id;
-        let buttonId = event.target.id;
+               let buttonId = event.target.id;
         let truckId = buttonId.split('/')[1];
         let model = buttonId.split('/')[0];
         this.setState({
@@ -97,7 +96,6 @@ class ShowElectricTrucks extends React.Component {
             record: this.state.model,
             handleDelete: this.handleDelete,
             handleClose: this.handleClose,
-            //  handleShow: this.handleShow
         }
 
         let { vehicles } = this.state;
@@ -119,12 +117,8 @@ class ShowElectricTrucks extends React.Component {
                     <button id={vehicle.model + '/' + vehicle.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button></td>}
             </tr>
         )
-        let cells = ['#', 'Manufacturer ', 'Model ', 'Electric vehicle type', 'Top speed',
-            'Nominal range', 'Market release', 'Payload capacity', 'Number of axel'];
-        let actions = ['Edit ', 'Delete'];
-        if (isModerator || isAdmin) {
-            cells = cells.concat(actions)
-        }
+
+        const cells = getTrucksTableHeadCells(isModerator, isAdmin);
         return (
             <div className='mx-auto px-5'>
                 <Table tableHeading='Electric trucks'>

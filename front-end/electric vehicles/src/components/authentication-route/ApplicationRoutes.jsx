@@ -26,7 +26,7 @@ const ApplicationRoutes = () => {
             <Router>
                 <NavigationBar />
                 <Switch>
-                    <AuthenticationRoute path='/' component={Index} exact redirectTo="/unauthorized" />
+                    <AuthenticationRoute path='/' component={Index} exact anonymous={true} redirectTo="/unauthorized" />
                     <AuthenticationRoute path='/home' component={HomePage} exact permitAllUsers={true} />
                     <AuthenticationRoute path='/register' component={Register} exact redirectTo="/unauthorized" anonymous={true} />
                     <AuthenticationRoute path='/login' component={Login} exact redirectTo="/unauthorized" anonymous={true} />

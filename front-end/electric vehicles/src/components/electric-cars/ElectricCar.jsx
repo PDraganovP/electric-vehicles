@@ -139,7 +139,13 @@ class ElectricCar extends React.Component {
     }
 
     render() {
-        let { formInitialValues } = this.state;
+        let { formInitialValues, electricVehicleTypes } = this.state;
+        const options = electricVehicleTypes.map(electricVehicleType =>
+            <option value={electricVehicleType.type} key={electricVehicleType.type}>
+                {electricVehicleType.type}
+            </option>
+        )
+
         return (
             <div>
                 <h3 style={{ textAlign: 'center', color: 'red' }}>Car</h3>
@@ -148,12 +154,10 @@ class ElectricCar extends React.Component {
                         initialValues={formInitialValues}
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
-                        validateOnBlur={false}
+                        validateOnBlur={true}
                         validationSchema={formSchema}
-                        validate={false}
                         enableReinitialize={true}
                     >
-
                         <Form id="electric-car-form">
                             <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
                             <TextInputField placeholder="Enter model" label="Model" name="model" />
@@ -171,11 +175,7 @@ class ElectricCar extends React.Component {
                                 <RadioInputField name="dualMotor" value="true" label="True" />
                                 <RadioInputField name="dualMotor" value="false" label="False" />
                             </RadioInputFieldWrapper>
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options=
-                                {this.state.electricVehicleTypes.map(electricVehicleType =>
-                                    <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}</option>
-                                )}
-                            />
+                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
                             <h3 className='text-center'>{this.state.message}</h3>
                             <button className="btn btn-success" type="submit">Save</button>
                         </Form>

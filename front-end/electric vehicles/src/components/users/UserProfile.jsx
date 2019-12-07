@@ -36,8 +36,6 @@ class UserProfile extends React.Component {
 
     render() {
         let styles = {
-            /*  height: '60vh',
-             width:'80%',rgba(0, 0, 0, 0.5) */
             paddingTop: '15vh',
             paddingBottom: '15vh',
             backgroundColor: '#f8f9fa',
@@ -51,8 +49,8 @@ class UserProfile extends React.Component {
                     <h1>Username</h1>
                     <h2>{username}</h2>
                 </div>
-                <div style={{ width: '100px', height: '100px'/* , border: 'solid green 1px' */ }} className="mx-auto">
-                    <img src="https://cdn.vox-cdn.com/thumbor/9QiP2iO26oVrzS3bUogeRtqIxn4=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/59669267/GettyImages_914642586.0.jpg" alt="rocket" style={{ objectFit: 'cover', width: '100px', height: '100px', borderRadius: '50%' }} />
+                <div style={{ width: '100px', height: '100px' }} className="mx-auto">
+                    <img src="https://fsmedia.imgix.net/6d/3b/27/0d/7199/4372/a982/ef903882eac9.jpeg" alt="rocket" style={{ objectFit: 'cover', width: '100px', height: '100px', borderRadius: '50%' }} />
                 </div>
                 <div>
                     <h1>Email</h1>

@@ -36,7 +36,7 @@ class EditUser extends React.Component {
             .then(response => {
                 const unauthorizedMessage = 'You are unauthorized'
                 let username = response.username;
-                if (username !== undefined) {
+                if (username !== undefined && unauthorizedMessage !== response.message) {
                     this.setState({
                         formInitialValues: {
                             username: response.username,
@@ -81,7 +81,6 @@ class EditUser extends React.Component {
                     })
 
                 } else {
-                    let unsuccessMessage = 'Please try to edit profile once again';
                     this.setState({
                         message: response.message
                     })
@@ -104,7 +103,6 @@ class EditUser extends React.Component {
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
                         validateOnBlur={true}
-                        // validate={this.validate}//false
                         validationSchema={formSchema}
                         enableReinitialize={true}
                     >
