@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import AuthenticationService from '../../service/AuthenticationService';
 import { Formik, Form } from 'formik';
 import TextInputField from '../input-fields/TextInputField';
@@ -61,7 +62,6 @@ class ElectricCar extends React.Component {
                             autonomous: response.autonomous.toString(),
                         }
                     })
-                    console.log('car', response);
                 } else {
                     this.setState({
                         message: response.message
@@ -78,7 +78,6 @@ class ElectricCar extends React.Component {
                 this.setState({
                     electricVehicleTypes: response
                 })
-                console.log('Types', response)
             }).catch(error => console.log('Error', error))
     }
 
@@ -178,6 +177,7 @@ class ElectricCar extends React.Component {
                             <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
                             <h3 className='text-center'>{this.state.message}</h3>
                             <button className="btn btn-success" type="submit">Save</button>
+                            <Link to='/show-cars' className="btn btn-success ml-1">Back</Link>
                         </Form>
                     </Formik>
                 </div>

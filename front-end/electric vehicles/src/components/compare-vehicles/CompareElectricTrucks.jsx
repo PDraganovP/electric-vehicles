@@ -32,8 +32,6 @@ class CompareElectricTrucks extends React.Component {
                     this.setState({
                         vehicles: response,
                     })
-                    console.log('Compare', response)
-                    console.log('state', this.state.vehicles)
                 } else {
                     this.setState({
                         message: response.message

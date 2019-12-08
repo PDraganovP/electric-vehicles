@@ -36,7 +36,6 @@ class ShowElectricCars extends React.Component {
                         vehicles: response
                     })
                 }
-                console.log('Success', JSON.stringify(response));
             }
             ).catch(error => console.log('Error', error))
     }
@@ -54,7 +53,6 @@ class ShowElectricCars extends React.Component {
                         message: response.message
                     });
                     this.getVehicles();
-                    console.log('Delete message', response.message)
                 } else {
                     this.setState({
                         message: response.messsage

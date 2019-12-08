@@ -30,7 +30,6 @@ class UserProfile extends React.Component {
                         message: response.message
                     })
                 }
-                console.log('User', JSON.stringify(response))
             }).catch(error => console.log('error', error));
     }
 

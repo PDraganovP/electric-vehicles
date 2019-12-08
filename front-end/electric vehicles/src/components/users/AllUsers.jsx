@@ -37,7 +37,6 @@ class AllUsers extends React.Component {
                         isLoading: false
                     })
                 }
-                console.log('Success', JSON.stringify(response));
             }
             ).catch(error => console.log('Error', error))
     }
@@ -62,9 +61,9 @@ class AllUsers extends React.Component {
             }).catch(error => console.log('Error', error))
     }
 
-    deleteUser = (event) => {
+    deleteUser = () => {
         let userId = this.state.delete;
-        let url = 'http://localhost:8080/users/delete/' + userId;//+ role + '/'
+        let url = 'http://localhost:8080/users/delete/' + userId;
 
         AuthenticationService.postData('', url)
             .then(response => {
@@ -75,7 +74,6 @@ class AllUsers extends React.Component {
                         message: response.message
                     });
                     this.getAllUsers();
-                    console.log('Delete message', response.message)
                 } else {
                     this.setState({
                         message: response.messsage

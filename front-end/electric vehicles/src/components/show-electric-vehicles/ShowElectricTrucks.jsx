@@ -35,7 +35,6 @@ class ShowElectricTrucks extends React.Component {
                         vehicles: response
                     })
                 }
-                console.log('Success', JSON.stringify(response));
             }
             ).catch(error => console.log('Error', error))
     }
@@ -54,7 +53,6 @@ class ShowElectricTrucks extends React.Component {
                         message: response.message
                     });
                     this.getVehicles();
-                    console.log('Delete message', response.message)
                 } else {
                     this.setState({
                         message: response.messsage
@@ -69,7 +67,7 @@ class ShowElectricTrucks extends React.Component {
         });
     };
     handleShow = (event) => {
-               let buttonId = event.target.id;
+        let buttonId = event.target.id;
         let truckId = buttonId.split('/')[1];
         let model = buttonId.split('/')[0];
         this.setState({

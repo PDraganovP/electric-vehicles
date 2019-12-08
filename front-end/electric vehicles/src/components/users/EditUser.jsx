@@ -74,8 +74,6 @@ class EditUser extends React.Component {
                 let message = response.message;
                 if (message !== undefined && message === successMessage) {
                     this.getUser();
-                    console.log('message', message);
-
                     this.setState({
                         message: response.message
                     })
@@ -85,8 +83,6 @@ class EditUser extends React.Component {
                         message: response.message
                     })
                 }
-
-                console.log('Success', JSON.stringify(response));
             })
             .catch(error => console.error('Error:', error));
 
@@ -113,7 +109,7 @@ class EditUser extends React.Component {
                             <TextInputField placeholder="Enter new password" label="New password" name="password" type="password" />
                             <TextInputField placeholder="Confirm password" label="Comfirm password" name="confirmPassword" type="password" />
                             <TextInputField placeholder="Enter email" label="Email address" name="email" type="email" />
-                            <button className="btn btn-success" type="Register">Save</button>
+                            <button className="btn btn-success" type="submit">Save</button>
                             <h4 className='text-center'>{this.state.message}</h4>
                         </Form>
                     </Formik>}
