@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import TextInputField from '../input-fields/TextInputField';
 import SelectInputField from '../input-fields/SelectInputField';
 import { getDate, parseToEnum } from '../electric-cars/Utils';
@@ -40,7 +40,7 @@ class ElectricTruck extends React.Component {
     getElectricTruck = (id) => {
         let url = 'http://localhost:8080/electricTrucks/edit/' + id;
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     formInitialValues: {
@@ -63,7 +63,7 @@ class ElectricTruck extends React.Component {
     getElectricVehicleTypes = () => {
         let url = 'http://localhost:8080/electricVehicleTypes';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     electricVehicleTypes: response
@@ -96,7 +96,7 @@ class ElectricTruck extends React.Component {
             url = 'http://localhost:8080/electricTrucks/edit/' + id
         }
 
-        AuthenticationService.postData(electricTruck, url)
+        DataService.postData(electricTruck, url)
             .then(response => {
                 let responseMessage = response.message;
                 let successMessage = 'New record was added';

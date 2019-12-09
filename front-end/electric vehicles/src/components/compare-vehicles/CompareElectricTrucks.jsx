@@ -1,6 +1,6 @@
 import React from 'react';
 //import ElectricCarDataService from '../../service/ElectricCarDataService';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import SelectInputField from './SelectInputField';
 import Canvas from './Canvas';
 import Main from './Main';
@@ -25,7 +25,7 @@ class CompareElectricTrucks extends React.Component {
     getVehicles() {
         let url = 'http://localhost:8080/electricTrucks/compareElectricTrucks';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 const unauthorizedMessage = 'You are unauthorized'
                 if (unauthorizedMessage !== response.message) {

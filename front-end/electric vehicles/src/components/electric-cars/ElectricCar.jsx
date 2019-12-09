@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import { Formik, Form } from 'formik';
 import TextInputField from '../input-fields/TextInputField';
 import SelectInputField from '../input-fields/SelectInputField';
@@ -43,7 +43,7 @@ class ElectricCar extends React.Component {
     getCar = (id) => {
         let url = 'http://localhost:8080/electricCars/edit/' + id;
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let feilMessage = 'The record was not found';
                 if (response.message !== feilMessage) {
@@ -73,7 +73,7 @@ class ElectricCar extends React.Component {
     getElectricVehicleTypes = () => {
         let url = 'http://localhost:8080/electricVehicleTypes'
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     electricVehicleTypes: response
@@ -117,7 +117,7 @@ class ElectricCar extends React.Component {
             url = 'http://localhost:8080/electricCars/edit/' + id
         }
 
-        AuthenticationService.postData(electricCar, url)
+        DataService.postData(electricCar, url)
             .then(response => {
                 let responseMessage = response.message;
                 let successMessage = 'New record was added';

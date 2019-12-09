@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import AuthenticationService from '../../service/AuthenticationService'
+import DataService from '../../service/DataService'
 import { getDate, getCarsTableHeadCells } from './Utils';
 import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
 import '../../styles/common-styles.css';
-
 
 class ShowElectricCars extends React.Component {
     constructor(props) {
@@ -28,7 +27,7 @@ class ShowElectricCars extends React.Component {
     getVehicles() {
         let url = 'http://localhost:8080/electricCars/show';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
@@ -44,7 +43,7 @@ class ShowElectricCars extends React.Component {
         let carId = this.state.delete;
         let url = 'http://localhost:8080/electricCars/delete/' + carId;
 
-        AuthenticationService.postData('', url)
+        DataService.postData('', url)
             .then(response => {
                 let successMessage = 'The record was deleted'
                 let message = response.message;
@@ -85,8 +84,8 @@ class ShowElectricCars extends React.Component {
     }
 
     render() {
-        const isAdmin = AuthenticationService.isAdmin()
-        const isModerator = AuthenticationService.isModerator()
+        const isAdmin = DataService.isAdmin()
+        const isModerator = DataService.isModerator()
 
         let props = {
             show: this.state.show,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { formSchema } from './RegisterFormValidation'
 import TextInputField from '../input-fields/TextInputField';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 
 const Register = (props) => {
     const [username, setUsername] = useState('');
@@ -21,7 +21,7 @@ const Register = (props) => {
 
         let url = 'http://localhost:8080/users/register';
 
-        AuthenticationService.postData(user, url)
+        DataService.postData(user, url)
             .then(response => {
                 let successMessage = 'Your registration is successful';
                 let message = response.message;
@@ -37,6 +37,7 @@ const Register = (props) => {
 
     return (
         <div className="mx-auto w-50">
+            <h2 className='text-center'>Register</h2>
             <Formik
                 initialValues={{ username, password, email, confirmPassword }}
                 onSubmit={handleSubmit}

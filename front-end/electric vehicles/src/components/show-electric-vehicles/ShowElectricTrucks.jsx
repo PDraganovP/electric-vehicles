@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import AuthenticationService from '../../service/AuthenticationService'
+import DataService from '../../service/DataService'
 import { getDate, getTrucksTableHeadCells } from './Utils';
 import Table from '../table/Table';
 import TableHead from '../table/TableHead';
@@ -27,7 +27,7 @@ class ShowElectricTrucks extends React.Component {
     getVehicles() {
         let url = 'http://localhost:8080/electricTrucks/show';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
@@ -44,7 +44,7 @@ class ShowElectricTrucks extends React.Component {
         let truckId = this.state.deleteId;
         let url = 'http://localhost:8080/electricTrucks/delete/' + truckId;
 
-        AuthenticationService.postData('', url)
+        DataService.postData('', url)
             .then(response => {
                 let successMessage = 'The record was deleted'
                 let message = response.message;
@@ -86,8 +86,8 @@ class ShowElectricTrucks extends React.Component {
 
 
     render() {
-        const isAdmin = AuthenticationService.isAdmin()
-        const isModerator = AuthenticationService.isModerator()
+        const isAdmin = DataService.isAdmin()
+        const isModerator = DataService.isModerator()
 
         let props = {
             show: this.state.show,

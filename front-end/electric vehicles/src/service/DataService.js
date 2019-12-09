@@ -1,6 +1,6 @@
 import Cookie from 'js-cookie';
 
-class AuthenticationService {
+class DataService {
 
     postData(data, url) {
 
@@ -80,7 +80,7 @@ class AuthenticationService {
         return false;
     }
 }
-export default new AuthenticationService()
+export default new DataService()
 
 
 

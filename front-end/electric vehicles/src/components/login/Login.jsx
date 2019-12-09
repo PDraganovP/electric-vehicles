@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import { formSchema } from './LoginFormValidation'
 import TextInputField from '../input-fields/TextInputField';
 import Cookie from 'js-cookie';
-import AuthenticationService from '../../service/AuthenticationService'
+import DataService from '../../service/DataService'
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
@@ -19,7 +19,7 @@ const Login = (props) => {
 
         let url = 'http://localhost:8080/authenticate';
 
-        AuthenticationService.postData(user, url)
+        DataService.postData(user, url)
             .then(response => {
                 let message = response.message;
                 let unathorizedMessage = 'You are unauthorized'
@@ -48,6 +48,7 @@ const Login = (props) => {
     return (
         <div className="d-flex justify-content-center">
             <div className="w-50 py-5">
+                <h2 className='text-center'>Login</h2>
                 <Formik
                     initialValues={{ username, password }}
                     onSubmit={handleSubmit}

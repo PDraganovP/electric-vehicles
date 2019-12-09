@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class UserProfile extends React.Component {
 
     getUserProfile = () => {
         let url = 'http://localhost:8080/users/profile';
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let username = response.username;
                 if (username !== undefined) {

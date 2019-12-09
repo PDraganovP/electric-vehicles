@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { formSchema } from './EditUserFormValidation';
 import TextInputField from '../input-fields/TextInputField';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 
 import { Spinner } from 'react-bootstrap';
 
@@ -32,7 +32,7 @@ class EditUser extends React.Component {
             isLoading: true
         })
         let url = 'http://localhost:8080/users/edit';
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 const unauthorizedMessage = 'You are unauthorized'
                 let username = response.username;
@@ -68,7 +68,7 @@ class EditUser extends React.Component {
             email: values.email
         }
 
-        AuthenticationService.patchData(user, url)
+        DataService.patchData(user, url)
             .then(response => {
                 let successMessage = 'You successfully edited your profile';
                 let message = response.message;
