@@ -1,21 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 import { formSchema } from './LoginFormValidation'
 import TextInputField from '../input-fields/TextInputField';
 import Cookie from 'js-cookie';
-import AuthenticationService from '../../service/AuthenticationService'
+import DataService from '../../service/DataService'
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            username: '',
-            password: '',
-            message: ''
-        }
-    }
+const Login = (props) => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-    handleSubmit = (values) => {
+    const handleSubmit = (values) => {
         let user = {
             username: values.username,
             password: values.password,
@@ -24,7 +19,7 @@ class Login extends React.Component {
 
         let url = 'http://localhost:8080/authenticate';
 
-        AuthenticationService.postData(user, url)
+        DataService.postData(user, url)
             .then(response => {
                 let message = response.message;
                 let unathorizedMessage = 'You are unauthorized'
@@ -34,8 +29,8 @@ class Login extends React.Component {
                     Cookie.set('token', token);
                     Cookie.set('userRole', userRole);
 
-                    let location = this.props.location.state;
-                    let { history } = this.props;
+                    let location = props.location.state;
+                    let { history } = props;
 
                     if (location !== undefined) {
                         let pathBeforeRedirect = location.from.pathname;
@@ -43,43 +38,35 @@ class Login extends React.Component {
                     } else {
                         history.push('/home');
                     }
-
                 } else if (message === unathorizedMessage) {
-                    this.setState({
-                        message: 'Bad credentials'
-                    })
+                    setMessage('Bad credentials');
                 }
-                console.log('Success', JSON.stringify(response));
             })
             .catch(error => console.error('Error:', error));
-
     }
-    render() {
-        let { username, password } = this.state;
 
-        return (
-            <div className="d-flex justify-content-center">
-                <div className="w-50 py-5">
-                    <Formik
-                        initialValues={{ username, password }}
-                        onSubmit={this.handleSubmit}
-                        validateOnChange={false}
-                        validateOnBlur={true}
-                        validationSchema={formSchema}
-                        enableReinitialize={true}
-                    >
-                        <Form >
-                            <TextInputField placeholder="Enter username" label="Username" name="username" />
-                            <TextInputField placeholder="Enter password" label="Password" name="password" type="password" />
-                            <h5 className="text-center" style={{ color: 'red' }} >{this.state.message}</h5>
-                            <button className="btn btn-success" type="submit">Login</button>
-                        </Form>
-                    </Formik>
-                </div>
+    return (
+        <div className="d-flex justify-content-center">
+            <div className="w-50 py-5">
+                <h2 className='text-center'>Login</h2>
+                <Formik
+                    initialValues={{ username, password }}
+                    onSubmit={handleSubmit}
+                    validateOnChange={false}
+                    validateOnBlur={true}
+                    validationSchema={formSchema}
+                    enableReinitialize={true}
+                >
+                    <Form >
+                        <TextInputField placeholder="Enter username" label="Username" name="username" />
+                        <TextInputField placeholder="Enter password" label="Password" name="password" type="password" />
+                        <h5 className="text-center" style={{ color: 'red' }} >{message}</h5>
+                        <button className="btn btn-success" type="submit">Login</button>
+                    </Form>
+                </Formik>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Login
-

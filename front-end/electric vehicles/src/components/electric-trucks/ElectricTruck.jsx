@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import TextInputField from '../input-fields/TextInputField';
 import SelectInputField from '../input-fields/SelectInputField';
 import { getDate, parseToEnum } from '../electric-cars/Utils';
@@ -39,7 +40,7 @@ class ElectricTruck extends React.Component {
     getElectricTruck = (id) => {
         let url = 'http://localhost:8080/electricTrucks/edit/' + id;
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     formInitialValues: {
@@ -62,12 +63,11 @@ class ElectricTruck extends React.Component {
     getElectricVehicleTypes = () => {
         let url = 'http://localhost:8080/electricVehicleTypes';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     electricVehicleTypes: response
                 })
-                console.log('Types', response)
             }).catch(error => console.log('Error', error))
     }
 
@@ -96,7 +96,7 @@ class ElectricTruck extends React.Component {
             url = 'http://localhost:8080/electricTrucks/edit/' + id
         }
 
-        AuthenticationService.postData(electricTruck, url)
+        DataService.postData(electricTruck, url)
             .then(response => {
                 let responseMessage = response.message;
                 let successMessage = 'New record was added';
@@ -117,7 +117,11 @@ class ElectricTruck extends React.Component {
     }
 
     render() {
-        let { formInitialValues } = this.state;
+        let { formInitialValues, electricVehicleTypes } = this.state;
+        const options = electricVehicleTypes.map(electricVehicleType =>
+            <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}
+            </option>
+        )
 
         return (
             <div className="mb-3">
@@ -127,8 +131,7 @@ class ElectricTruck extends React.Component {
                         initialValues={formInitialValues}
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
-                        validateOnBlur={false}
-                        //validate={this.validate}
+                        validateOnBlur={true}
                         validationSchema={formSchema}
                         enableReinitialize={true}
                     >
@@ -143,14 +146,10 @@ class ElectricTruck extends React.Component {
                             <DatePickerInputField name="marketRelease" label="Choose date" />
                             <TextInputField placeholder="Enter payload capacity" label="Payload capacity" name="payloadCapacity" />
                             <TextInputField placeholder="Enter number of axel" label="Number of axel" name="numberOfAxel" />
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options=
-                                {this.state.electricVehicleTypes.map(electricVehicleType =>
-                                    <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}</option>
-                                )}
-                            />
-
+                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
                             <h3 className='text-center'>{this.state.message}</h3>
                             <button className="btn btn-success" type="submit">Save</button>
+                            <Link to='/show-trucks' className="btn btn-success ml-1">Back</Link>
                         </Form>
                     </Formik>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
@@ -24,7 +24,7 @@ class AllUsers extends React.Component {
 
     getAllUsers = () => {
         let url = 'http://localhost:8080/users/all';
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
@@ -37,7 +37,6 @@ class AllUsers extends React.Component {
                         isLoading: false
                     })
                 }
-                console.log('Success', JSON.stringify(response));
             }
             ).catch(error => console.log('Error', error))
     }
@@ -50,7 +49,7 @@ class AllUsers extends React.Component {
         console.log('userId', userId);
         let url = 'http://localhost:8080/users/set-' + role + '/' + userId;
 
-        AuthenticationService.postData('', url)
+        DataService.postData('', url)
             .then(response => {
                 let message = response.message;
                 if (message !== undefined) {
@@ -62,11 +61,11 @@ class AllUsers extends React.Component {
             }).catch(error => console.log('Error', error))
     }
 
-    deleteUser = (event) => {
+    deleteUser = () => {
         let userId = this.state.delete;
-        let url = 'http://localhost:8080/users/delete/' + userId;//+ role + '/'
+        let url = 'http://localhost:8080/users/delete/' + userId;
 
-        AuthenticationService.postData('', url)
+        DataService.postData('', url)
             .then(response => {
                 let successMessage = 'You successfully deleted the user';
                 let message = response.message;
@@ -75,7 +74,6 @@ class AllUsers extends React.Component {
                         message: response.message
                     });
                     this.getAllUsers();
-                    console.log('Delete message', response.message)
                 } else {
                     this.setState({
                         message: response.messsage

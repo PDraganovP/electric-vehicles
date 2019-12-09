@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import AuthenticationService from '../../service/AuthenticationService'
-import { getDate } from './Utils';
+import DataService from '../../service/DataService'
+import { getDate, getCarsTableHeadCells } from './Utils';
 import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
 import '../../styles/common-styles.css';
-
 
 class ShowElectricCars extends React.Component {
     constructor(props) {
@@ -28,7 +27,7 @@ class ShowElectricCars extends React.Component {
     getVehicles() {
         let url = 'http://localhost:8080/electricCars/show';
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
@@ -36,27 +35,23 @@ class ShowElectricCars extends React.Component {
                         vehicles: response
                     })
                 }
-                console.log('Success', JSON.stringify(response));
             }
             ).catch(error => console.log('Error', error))
     }
 
-    deleteCar = (event) => {
-        //  let buttonId = event.target.id;
-        //let userId = buttonId.split('/')[1];
+    deleteCar = () => {
         let carId = this.state.delete;
-        let url = 'http://localhost:8080/electricCars/delete/' + carId;//+ role + '/'
+        let url = 'http://localhost:8080/electricCars/delete/' + carId;
 
-        AuthenticationService.postData('', url)
+        DataService.postData('', url)
             .then(response => {
-                let successMessage = 'The record was deleted'//'You successfully deleted the car';
+                let successMessage = 'The record was deleted'
                 let message = response.message;
                 if (successMessage === message) {
                     this.setState({
                         message: response.message
                     });
                     this.getVehicles();
-                    console.log('Delete message', response.message)
                 } else {
                     this.setState({
                         message: response.messsage
@@ -71,7 +66,6 @@ class ShowElectricCars extends React.Component {
         });
     };
     handleShow = (event) => {
-        //  let id = event.target.id;
         let buttonId = event.target.id;
         let carId = buttonId.split('/')[1];
         let model = buttonId.split('/')[0];
@@ -90,15 +84,14 @@ class ShowElectricCars extends React.Component {
     }
 
     render() {
-        const isAdmin = AuthenticationService.isAdmin()
-        const isModerator = AuthenticationService.isModerator()
+        const isAdmin = DataService.isAdmin()
+        const isModerator = DataService.isModerator()
 
         let props = {
             show: this.state.show,
             record: this.state.model,
             handleDelete: this.handleDelete,
             handleClose: this.handleClose,
-            //  handleShow: this.handleShow
         }
 
 
@@ -119,12 +112,8 @@ class ShowElectricCars extends React.Component {
                     <button id={vehicle.model + '/' + vehicle.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button></td>}
             </tr>
         )
-        let cells = ['#', 'Manufacturer ', 'Model ', 'Electric vehicle type', 'Top speed',
-            'Nominal range', 'Autonomous', 'Market release'];
-        let actions = ['Edit ', 'Delete'];
-        if (isModerator || isAdmin) {
-            cells = cells.concat(actions)
-        }
+        const cells = getCarsTableHeadCells(isModerator, isAdmin);
+
         return (
             <div className='mx-auto px-5'>
                 <Table tableHeading='Electric cars' >

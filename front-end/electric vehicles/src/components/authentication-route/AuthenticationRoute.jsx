@@ -1,27 +1,26 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 import PropTypes from 'prop-types';
 
 class AuthenticationRoute extends React.Component {
 
     isAuthorized() {
         let { admin, moderator } = this.props;
-        let isAdmin = AuthenticationService.isAdmin();
-        let isModerator = AuthenticationService.isModerator();
+        let isAdmin = DataService.isAdmin();
+        let isModerator = DataService.isModerator();
         if (admin && isAdmin) {
             return true
-        } else if (moderator && isModerator || isAdmin) {
+        } else if ((moderator && isModerator) || isAdmin) {
             return true
         } else {
             return false
         }
     }
 
-
     render() {
         const { anonymous, permitAllUsers } = this.props;
-        let isAuthenticated = AuthenticationService.isUserLoggedIn();
+        let isAuthenticated = DataService.isUserLoggedIn();
         if (anonymous && !isAuthenticated) {
             return <Route {...this.props} />
         } else if (permitAllUsers && isAuthenticated) {

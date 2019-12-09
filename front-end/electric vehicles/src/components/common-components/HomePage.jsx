@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../user-provider/UserProvider'
 
 const HomePage = () => {
+    const username = useContext(UserContext);
     let styles = {
         height: '10vh',
         paddingTop: '30vh',
@@ -9,7 +11,7 @@ const HomePage = () => {
 
     return (
         <div className="text-center" style={styles}>
-            <h1 >Welcome</h1>
+            {username && <h1 >Welcome, {username}</h1>}
         </div>
     )
 }

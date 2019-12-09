@@ -1,5 +1,6 @@
 import React from 'react';
-import AuthenticationService from '../../service/AuthenticationService';
+import { Link } from 'react-router-dom'
+import DataService from '../../service/DataService';
 import { Formik, Form } from 'formik';
 import TextInputField from '../input-fields/TextInputField';
 import SelectInputField from '../input-fields/SelectInputField';
@@ -42,7 +43,7 @@ class ElectricCar extends React.Component {
     getCar = (id) => {
         let url = 'http://localhost:8080/electricCars/edit/' + id;
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 let feilMessage = 'The record was not found';
                 if (response.message !== feilMessage) {
@@ -61,7 +62,6 @@ class ElectricCar extends React.Component {
                             autonomous: response.autonomous.toString(),
                         }
                     })
-                    console.log('car', response);
                 } else {
                     this.setState({
                         message: response.message
@@ -73,12 +73,11 @@ class ElectricCar extends React.Component {
     getElectricVehicleTypes = () => {
         let url = 'http://localhost:8080/electricVehicleTypes'
 
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 this.setState({
                     electricVehicleTypes: response
                 })
-                console.log('Types', response)
             }).catch(error => console.log('Error', error))
     }
 
@@ -118,7 +117,7 @@ class ElectricCar extends React.Component {
             url = 'http://localhost:8080/electricCars/edit/' + id
         }
 
-        AuthenticationService.postData(electricCar, url)
+        DataService.postData(electricCar, url)
             .then(response => {
                 let responseMessage = response.message;
                 let successMessage = 'New record was added';
@@ -139,7 +138,13 @@ class ElectricCar extends React.Component {
     }
 
     render() {
-        let { formInitialValues } = this.state;
+        let { formInitialValues, electricVehicleTypes } = this.state;
+        const options = electricVehicleTypes.map(electricVehicleType =>
+            <option value={electricVehicleType.type} key={electricVehicleType.type}>
+                {electricVehicleType.type}
+            </option>
+        )
+
         return (
             <div>
                 <h3 style={{ textAlign: 'center', color: 'red' }}>Car</h3>
@@ -148,12 +153,10 @@ class ElectricCar extends React.Component {
                         initialValues={formInitialValues}
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
-                        validateOnBlur={false}
+                        validateOnBlur={true}
                         validationSchema={formSchema}
-                        validate={false}
                         enableReinitialize={true}
                     >
-
                         <Form id="electric-car-form">
                             <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
                             <TextInputField placeholder="Enter model" label="Model" name="model" />
@@ -171,13 +174,10 @@ class ElectricCar extends React.Component {
                                 <RadioInputField name="dualMotor" value="true" label="True" />
                                 <RadioInputField name="dualMotor" value="false" label="False" />
                             </RadioInputFieldWrapper>
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options=
-                                {this.state.electricVehicleTypes.map(electricVehicleType =>
-                                    <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}</option>
-                                )}
-                            />
+                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
                             <h3 className='text-center'>{this.state.message}</h3>
                             <button className="btn btn-success" type="submit">Save</button>
+                            <Link to='/show-cars' className="btn btn-success ml-1">Back</Link>
                         </Form>
                     </Formik>
                 </div>

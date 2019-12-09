@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { formSchema } from './EditUserFormValidation';
 import TextInputField from '../input-fields/TextInputField';
-import AuthenticationService from '../../service/AuthenticationService';
+import DataService from '../../service/DataService';
 
 import { Spinner } from 'react-bootstrap';
 
@@ -32,11 +32,11 @@ class EditUser extends React.Component {
             isLoading: true
         })
         let url = 'http://localhost:8080/users/edit';
-        AuthenticationService.getData(url)
+        DataService.getData(url)
             .then(response => {
                 const unauthorizedMessage = 'You are unauthorized'
                 let username = response.username;
-                if (username !== undefined) {
+                if (username !== undefined && unauthorizedMessage !== response.message) {
                     this.setState({
                         formInitialValues: {
                             username: response.username,
@@ -68,26 +68,21 @@ class EditUser extends React.Component {
             email: values.email
         }
 
-        AuthenticationService.patchData(user, url)
+        DataService.patchData(user, url)
             .then(response => {
                 let successMessage = 'You successfully edited your profile';
                 let message = response.message;
                 if (message !== undefined && message === successMessage) {
                     this.getUser();
-                    console.log('message', message);
-
                     this.setState({
                         message: response.message
                     })
 
                 } else {
-                    let unsuccessMessage = 'Please try to edit profile once again';
                     this.setState({
                         message: response.message
                     })
                 }
-
-                console.log('Success', JSON.stringify(response));
             })
             .catch(error => console.error('Error:', error));
 
@@ -104,7 +99,6 @@ class EditUser extends React.Component {
                         onSubmit={this.handleSubmit}
                         validateOnChange={false}
                         validateOnBlur={true}
-                        // validate={this.validate}//false
                         validationSchema={formSchema}
                         enableReinitialize={true}
                     >
@@ -115,7 +109,7 @@ class EditUser extends React.Component {
                             <TextInputField placeholder="Enter new password" label="New password" name="password" type="password" />
                             <TextInputField placeholder="Confirm password" label="Comfirm password" name="confirmPassword" type="password" />
                             <TextInputField placeholder="Enter email" label="Email address" name="email" type="email" />
-                            <button className="btn btn-success" type="Register">Save</button>
+                            <button className="btn btn-success" type="submit">Save</button>
                             <h4 className='text-center'>{this.state.message}</h4>
                         </Form>
                     </Formik>}

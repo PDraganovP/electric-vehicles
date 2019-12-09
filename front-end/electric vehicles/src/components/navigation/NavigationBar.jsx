@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import AuthenticationService from '../service/AuthenticationService';
+import DataService from '../../service/DataService';
 
 class NavigationBar extends React.Component {
     render() {
-        const isUserLoggedIn = AuthenticationService.isUserLoggedIn();
-        const isAdmin = AuthenticationService.isAdmin();
-        const isModerator = AuthenticationService.isModerator();
+        const isUserLoggedIn = DataService.isUserLoggedIn();
+        const isAdmin = DataService.isAdmin();
+        const isModerator = DataService.isModerator();
 
         return (
             <React.Fragment>
@@ -35,7 +35,7 @@ class NavigationBar extends React.Component {
                         </NavDropdown>}
                     </Nav>
                     <Nav className="ml-auto" >
-                        {(isUserLoggedIn) && <Link to="/logout" className="nav-link justify-content-end" onClick={AuthenticationService.logout}>Logout</Link>}
+                        {(isUserLoggedIn) && <Link to="/logout" className="nav-link justify-content-end" onClick={DataService.logout}>Logout</Link>}
                         {(!isUserLoggedIn) && <Link to="/register" className="nav-link">Register</Link>}
                         {(!isUserLoggedIn) && <Link to="/login" className="nav-link">Login</Link>}
                     </Nav>
