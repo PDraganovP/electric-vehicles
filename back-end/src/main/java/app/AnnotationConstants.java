@@ -4,7 +4,7 @@ public final class AnnotationConstants {
     public static final String INPUT_IS_NOT_CORRECT = "Input is not correct";
     public static final String ENUMERATION_VALUE_IS_NOT_CORRECT = "Enumeration value is not correct";
     public static final String NOT_EMPTY = "Input can not be empty";
-    public static final int TEXT_INPUT_MIN_LENGTH = 4;
+    public static final int TEXT_INPUT_MIN_LENGTH = 3;
     public static final int TEXT_INPUT_MAX_LENGTH = 30;
     public static final int MIN_PASSENGERS = 1;
     public static final int MAX_PASSENGERS = 10;
@@ -19,5 +19,5 @@ public final class AnnotationConstants {
     public static final int MIN_CHARGING_TIME = 1;
     public static final int MAX_CHARGING_TIME = 120;
     public static final int MIN_NOMINAL_RANGE = 30;
-    public static final int MAX_NOMINAL_RANGE = 100;
+    public static final int MAX_NOMINAL_RANGE = 1000;
 }

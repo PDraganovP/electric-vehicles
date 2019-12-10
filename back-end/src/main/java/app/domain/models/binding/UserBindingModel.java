@@ -1,25 +1,31 @@
 package app.domain.models.binding;
 
-import java.util.Set;
+import app.validation.TextConstraint;
+
+import javax.validation.constraints.NotEmpty;
+
+import static app.AnnotationConstants.*;
+import static app.AnnotationConstants.INPUT_IS_NOT_CORRECT;
 
 public class UserBindingModel {
-    private String id;
+   // private String id;
     private String username;
     private String password;
-    private String email;
-    private Set<RoleBindingModel> authorities;
+   /* private String email;
+    private Set<RoleBindingModel> authorities;*/
 
     public UserBindingModel() {
     }
 
-    public String getId() {
-        return id;
-    }
+    /* public String getId() {
+         return id;
+     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
+     public void setId(String id) {
+         this.id = id;
+     }*/
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getUsername() {
         return username;
     }
@@ -28,6 +34,8 @@ public class UserBindingModel {
         this.username = username;
     }
 
+    @NotEmpty(message = NOT_EMPTY)
+    @TextConstraint(min = TEXT_INPUT_MIN_LENGTH, max = TEXT_INPUT_MAX_LENGTH, message = INPUT_IS_NOT_CORRECT)
     public String getPassword() {
         return password;
     }
@@ -36,7 +44,7 @@ public class UserBindingModel {
         this.password = password;
     }
 
-    public String getEmail() {
+   /* public String getEmail() {
         return email;
     }
 
@@ -50,5 +58,5 @@ public class UserBindingModel {
 
     public void setAuthorities(Set<RoleBindingModel> authorities) {
         this.authorities = authorities;
-    }
+    }*/
 }
