@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const RadioInputFieldWrapper = ({ children, name, label }) => {
     return (
@@ -10,4 +11,10 @@ const RadioInputFieldWrapper = ({ children, name, label }) => {
         </React.Fragment>
     )
 }
+
+RadioInputFieldWrapper.propTypes = {
+    name: PropTypes.string,
+    label: PropTypes.string
+}
+
 export default RadioInputFieldWrapper

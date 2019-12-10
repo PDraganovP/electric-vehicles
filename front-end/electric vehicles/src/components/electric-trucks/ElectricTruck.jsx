@@ -7,6 +7,7 @@ import SelectInputField from '../input-fields/SelectInputField';
 import { getDate, parseToEnum } from '../electric-cars/Utils';
 import DatePickerInputField from '../input-fields/DatePickerInputField';
 import { formSchema } from './TruckFormValidation';
+import Loader from '../loader/Loader';
 
 class ElectricTruck extends React.Component {
     constructor(props) {
@@ -25,7 +26,8 @@ class ElectricTruck extends React.Component {
                 payloadCapacity: '',
                 numberOfAxel: ''
             },
-            message: ''
+            message: '',
+            isLoading: false
         }
     }
     componentDidMount() {
@@ -38,8 +40,10 @@ class ElectricTruck extends React.Component {
 
 
     getElectricTruck = (id) => {
+        this.setState({
+            isLoading: true
+        })
         let url = 'http://localhost:8080/electricTrucks/edit/' + id;
-
         DataService.getData(url)
             .then(response => {
                 this.setState({
@@ -54,7 +58,8 @@ class ElectricTruck extends React.Component {
                         marketRelease: (response.marketRelease !== null) ? getDate(response.marketRelease) : '',
                         payloadCapacity: response.payloadCapacity,
                         numberOfAxel: response.numberOfAxel
-                    }
+                    },
+                    isLoading: false
                 })
                 console.log('truck', response);
             }).catch(error => console.log('Error', error))
@@ -117,7 +122,7 @@ class ElectricTruck extends React.Component {
     }
 
     render() {
-        let { formInitialValues, electricVehicleTypes } = this.state;
+        let { formInitialValues, electricVehicleTypes, isLoading } = this.state;
         const options = electricVehicleTypes.map(electricVehicleType =>
             <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}
             </option>
@@ -127,31 +132,32 @@ class ElectricTruck extends React.Component {
             <div className="mb-3">
                 <h3 style={{ textAlign: 'center', color: 'red' }}>Truck</h3>
                 <div className="container mx-auto w-75">
-                    <Formik
-                        initialValues={formInitialValues}
-                        onSubmit={this.handleSubmit}
-                        validateOnChange={false}
-                        validateOnBlur={true}
-                        validationSchema={formSchema}
-                        enableReinitialize={true}
-                    >
+                    {isLoading ? <Loader /> :
+                        <Formik
+                            initialValues={formInitialValues}
+                            onSubmit={this.handleSubmit}
+                            validateOnChange={false}
+                            validateOnBlur={true}
+                            validationSchema={formSchema}
+                            enableReinitialize={true}
+                        >
 
-                        <Form id="electric-truck-form">
-                            <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
-                            <TextInputField placeholder="Enter model" label="Model" name="model" />
-                            <TextInputField placeholder="Enter top speed" label="Top speed" name="topSpeed" />
-                            <TextInputField placeholder="Enter acceleration" label="Acceleration" name="acceleration" />
-                            <TextInputField placeholder="Enter charging time" label="Charging time" name="chargingTime" />
-                            <TextInputField placeholder="Enter nominal range" label="Nominal range" name="nominalRange" />
-                            <DatePickerInputField name="marketRelease" label="Choose date" />
-                            <TextInputField placeholder="Enter payload capacity" label="Payload capacity" name="payloadCapacity" />
-                            <TextInputField placeholder="Enter number of axel" label="Number of axel" name="numberOfAxel" />
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
-                            <h3 className='text-center'>{this.state.message}</h3>
-                            <button className="btn btn-success" type="submit">Save</button>
-                            <Link to='/show-trucks' className="btn btn-success ml-1">Back</Link>
-                        </Form>
-                    </Formik>
+                            <Form id="electric-truck-form">
+                                <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
+                                <TextInputField placeholder="Enter model" label="Model" name="model" />
+                                <TextInputField placeholder="Enter top speed" label="Top speed" name="topSpeed" />
+                                <TextInputField placeholder="Enter acceleration" label="Acceleration" name="acceleration" />
+                                <TextInputField placeholder="Enter charging time" label="Charging time" name="chargingTime" />
+                                <TextInputField placeholder="Enter nominal range" label="Nominal range" name="nominalRange" />
+                                <DatePickerInputField name="marketRelease" label="Choose date" />
+                                <TextInputField placeholder="Enter payload capacity" label="Payload capacity" name="payloadCapacity" />
+                                <TextInputField placeholder="Enter number of axel" label="Number of axel" name="numberOfAxel" />
+                                <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
+                                <h3 className='text-center'>{this.state.message}</h3>
+                                <button className="btn btn-success" type="submit">Save</button>
+                                <Link to='/show-trucks' className="btn btn-success ml-1">Back</Link>
+                            </Form>
+                        </Formik>}
                 </div>
             </div >
         )

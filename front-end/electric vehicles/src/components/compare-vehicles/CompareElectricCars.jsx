@@ -1,5 +1,4 @@
 import React from 'react';
-//import ElectricCarDataService from '../../service/ElectricCarDataService';
 import DataService from '../../service/DataService';
 import SelectInputField from './SelectInputField';
 import Canvas from './Canvas';

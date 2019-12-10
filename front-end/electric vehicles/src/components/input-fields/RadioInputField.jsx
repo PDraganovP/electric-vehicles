@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, } from 'formik';
+import PropTypes from 'prop-types';
 
 const RadioInputField = ({ name, value, label }) => {
     return (
@@ -11,4 +12,11 @@ const RadioInputField = ({ name, value, label }) => {
         </React.Fragment>
     )
 }
+
+RadioInputField.propTypes = {
+    name: PropTypes.string,
+    value: PropTypes.string,
+    label: PropTypes.string
+}
+
 export default RadioInputField 

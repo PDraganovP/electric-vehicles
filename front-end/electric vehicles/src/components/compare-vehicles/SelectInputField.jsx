@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const SelectInputfield = ({ options, label, name, id, className }) => {
 
@@ -12,6 +13,14 @@ const SelectInputfield = ({ options, label, name, id, className }) => {
             </div>
         </div>
     )
+}
+
+SelectInputfield.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    className: PropTypes.string,
+    label: PropTypes.string,
+    options: PropTypes.array
 }
 
 export default SelectInputfield

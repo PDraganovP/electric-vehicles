@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types';
 
 const TextInputField = ({ name, label, placeholder, type, disabled }) => {
 
@@ -14,6 +15,15 @@ const TextInputField = ({ name, label, placeholder, type, disabled }) => {
         </React.Fragment>
     )
 }
+
+TextInputField.propTypes = {
+    name: PropTypes.string,
+    label: PropTypes.string,
+    placehholder: PropTypes.string,
+    type: PropTypes.string,
+    disabled: PropTypes.bool
+}
+
 TextInputField.propsDefault = {
     type: 'text'
 }

@@ -17,7 +17,7 @@ const UserProvider = ({ children }) => {
                     setUsername('')
                 }
             }).catch(error => console.log('error', error));
-    })
+    }, [])
 
     return (
         <UserContext.Provider value={username}>

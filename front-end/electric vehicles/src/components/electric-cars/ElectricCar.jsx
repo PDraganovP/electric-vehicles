@@ -9,6 +9,7 @@ import RadioInputFieldWrapper from '../input-fields/RadioInputFieldWrapper';
 import DatePickerInputField from '../input-fields/DatePickerInputField';
 import { formSchema } from './CarFormValidation';
 import { getDate, parseToEnum } from './Utils';
+import Loader from '../loader/Loader';
 
 class ElectricCar extends React.Component {
     constructor(props) {
@@ -28,7 +29,8 @@ class ElectricCar extends React.Component {
                 passengers: '',
                 autonomous: ''
             },
-            message: ''
+            message: '',
+            isLoading: false
         }
     }
 
@@ -41,8 +43,10 @@ class ElectricCar extends React.Component {
     }
 
     getCar = (id) => {
+        this.setState({
+            isLoading: true
+        })
         let url = 'http://localhost:8080/electricCars/edit/' + id;
-
         DataService.getData(url)
             .then(response => {
                 let feilMessage = 'The record was not found';
@@ -60,11 +64,13 @@ class ElectricCar extends React.Component {
                             passengers: response.passengers,
                             dualMotor: response.dualMotor.toString(),
                             autonomous: response.autonomous.toString(),
-                        }
+                        },
+                        isLoading: false
                     })
                 } else {
                     this.setState({
-                        message: response.message
+                        message: response.message,
+                        isLoading: false
                     })
                 }
             }).catch(error => console.log('Error', error))
@@ -138,7 +144,7 @@ class ElectricCar extends React.Component {
     }
 
     render() {
-        let { formInitialValues, electricVehicleTypes } = this.state;
+        let { formInitialValues, electricVehicleTypes, isLoading } = this.state;
         const options = electricVehicleTypes.map(electricVehicleType =>
             <option value={electricVehicleType.type} key={electricVehicleType.type}>
                 {electricVehicleType.type}
@@ -149,37 +155,38 @@ class ElectricCar extends React.Component {
             <div>
                 <h3 style={{ textAlign: 'center', color: 'red' }}>Car</h3>
                 <div className="container mx-auto w-75">
-                    <Formik
-                        initialValues={formInitialValues}
-                        onSubmit={this.handleSubmit}
-                        validateOnChange={false}
-                        validateOnBlur={true}
-                        validationSchema={formSchema}
-                        enableReinitialize={true}
-                    >
-                        <Form id="electric-car-form">
-                            <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
-                            <TextInputField placeholder="Enter model" label="Model" name="model" />
-                            <TextInputField placeholder="Enter top speed" label="Top speed" name="topSpeed" />
-                            <TextInputField placeholder="Enter acceleration" label="Acceleration" name="acceleration" />
-                            <TextInputField placeholder="Enter charging time" label="Charging time" name="chargingTime" />
-                            <TextInputField placeholder="Enter nominal range" label="Nominal range" name="nominalRange" />
-                            <DatePickerInputField name="marketRelease" label="Choose date" />
-                            <TextInputField placeholder="Enter passengers" label="Passengers" name="passengers" />
-                            <RadioInputFieldWrapper name="dualMotor" label="Autonomous">
-                                <RadioInputField name="autonomous" value="true" label="True" />
-                                <RadioInputField name="autonomous" value="false" label="False" />
-                            </RadioInputFieldWrapper>
-                            <RadioInputFieldWrapper name="dualMotor" label="Dual motor">
-                                <RadioInputField name="dualMotor" value="true" label="True" />
-                                <RadioInputField name="dualMotor" value="false" label="False" />
-                            </RadioInputFieldWrapper>
-                            <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
-                            <h3 className='text-center'>{this.state.message}</h3>
-                            <button className="btn btn-success" type="submit">Save</button>
-                            <Link to='/show-cars' className="btn btn-success ml-1">Back</Link>
-                        </Form>
-                    </Formik>
+                    {isLoading ? <Loader /> :
+                        <Formik
+                            initialValues={formInitialValues}
+                            onSubmit={this.handleSubmit}
+                            validateOnChange={false}
+                            validateOnBlur={true}
+                            validationSchema={formSchema}
+                            enableReinitialize={true}
+                        >
+                            <Form id="electric-car-form">
+                                <TextInputField placeholder="Enter manufacturer" label="Manufacturer" name="manufacturer" />
+                                <TextInputField placeholder="Enter model" label="Model" name="model" />
+                                <TextInputField placeholder="Enter top speed" label="Top speed" name="topSpeed" />
+                                <TextInputField placeholder="Enter acceleration" label="Acceleration" name="acceleration" />
+                                <TextInputField placeholder="Enter charging time" label="Charging time" name="chargingTime" />
+                                <TextInputField placeholder="Enter nominal range" label="Nominal range" name="nominalRange" />
+                                <DatePickerInputField name="marketRelease" label="Choose date" />
+                                <TextInputField placeholder="Enter passengers" label="Passengers" name="passengers" />
+                                <RadioInputFieldWrapper name="dualMotor" label="Autonomous">
+                                    <RadioInputField name="autonomous" value="true" label="True" />
+                                    <RadioInputField name="autonomous" value="false" label="False" />
+                                </RadioInputFieldWrapper>
+                                <RadioInputFieldWrapper name="dualMotor" label="Dual motor">
+                                    <RadioInputField name="dualMotor" value="true" label="True" />
+                                    <RadioInputField name="dualMotor" value="false" label="False" />
+                                </RadioInputFieldWrapper>
+                                <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
+                                <h3 className='text-center'>{this.state.message}</h3>
+                                <button className="btn btn-success" type="submit">Save</button>
+                                <Link to='/show-cars' className="btn btn-success ml-1">Back</Link>
+                            </Form>
+                        </Formik>}
                 </div>
             </div >
         )

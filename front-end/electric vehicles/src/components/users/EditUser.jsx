@@ -3,8 +3,7 @@ import { Formik, Form } from 'formik';
 import { formSchema } from './EditUserFormValidation';
 import TextInputField from '../input-fields/TextInputField';
 import DataService from '../../service/DataService';
-
-import { Spinner } from 'react-bootstrap';
+import Loader from '../loader/Loader';
 
 class EditUser extends React.Component {
     constructor(props) {
@@ -18,7 +17,6 @@ class EditUser extends React.Component {
                 email: ''
             },
             message: '',
-
             isLoading: false
         }
     }
@@ -89,11 +87,11 @@ class EditUser extends React.Component {
     }
 
     render() {
-        let { formInitialValues } = this.state;
+        let { formInitialValues, isLoading } = this.state;
 
         return (
             <div className="mx-auto w-50">
-                {this.state.isLoading ? <Spinner animation="border" variant="primary" style={{ textAlign: 'center' }} /> :
+                {isLoading ? <Loader /> :
                     <Formik
                         initialValues={formInitialValues}
                         onSubmit={this.handleSubmit}

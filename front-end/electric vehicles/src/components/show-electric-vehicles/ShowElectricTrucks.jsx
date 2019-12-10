@@ -6,6 +6,7 @@ import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
+import Loader from '../loader/Loader';
 import '../../styles/common-styles.css';
 
 class ShowElectricTrucks extends React.Component {
@@ -16,7 +17,8 @@ class ShowElectricTrucks extends React.Component {
             message: '',
             model: '',
             show: false,
-            deleteId: ''
+            deleteId: '',
+            isLoading: false
         })
     }
 
@@ -25,14 +27,17 @@ class ShowElectricTrucks extends React.Component {
     }
 
     getVehicles() {
+        this.setState({
+            isLoading: true
+        })
         let url = 'http://localhost:8080/electricTrucks/show';
-
         DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
                     this.setState({
-                        vehicles: response
+                        vehicles: response,
+                        isLoading: false
                     })
                 }
             }
@@ -84,7 +89,6 @@ class ShowElectricTrucks extends React.Component {
         this.deleteTruck();
     }
 
-
     render() {
         const isAdmin = DataService.isAdmin()
         const isModerator = DataService.isModerator()
@@ -96,7 +100,7 @@ class ShowElectricTrucks extends React.Component {
             handleClose: this.handleClose,
         }
 
-        let { vehicles } = this.state;
+        let { vehicles, isLoading } = this.state;
         let vehicleRow = vehicles.map((vehicle, index) =>
             <tr key={vehicle.id} className='data-row'>
                 <td>{index + 1}</td>
@@ -119,12 +123,13 @@ class ShowElectricTrucks extends React.Component {
         const cells = getTrucksTableHeadCells(isModerator, isAdmin);
         return (
             <div className='mx-auto px-5'>
-                <Table tableHeading='Electric trucks'>
-                    <TableHead cells={cells} />
-                    <TableBody>
-                        {vehicleRow}
-                    </TableBody>
-                </Table>
+                {isLoading ? <Loader /> :
+                    <Table tableHeading='Electric trucks'>
+                        <TableHead cells={cells} />
+                        <TableBody>
+                            {vehicleRow}
+                        </TableBody>
+                    </Table>}
                 <ModalComponent {...props} />
             </div>
         )

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Canvas = ({ canvasHeading, id, width, height }) => {
     return (
@@ -9,6 +10,14 @@ const Canvas = ({ canvasHeading, id, width, height }) => {
             </div>
         </React.Fragment>
     )
+}
+
+Canvas.propTypes = {
+    canvasHeading: PropTypes.string,
+    id: PropTypes.string,
+    width: PropTypes.string,
+    height: PropTypes.string,
+
 }
 
 Canvas.defaultProps = {

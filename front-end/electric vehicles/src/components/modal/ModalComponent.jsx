@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const ModalComponent = ({ show, record, handleClose, handleDelete }) => {
     return (
@@ -20,7 +21,13 @@ const ModalComponent = ({ show, record, handleClose, handleDelete }) => {
             </Modal>
         </React.Fragment>
     );
+}
 
+ModalComponent.propTypes = {
+    show: PropTypes.bool,
+    record: PropTypes.string,
+    handleClose: PropTypes.func,
+    handleDelete: PropTypes.func,
 }
 
 export default ModalComponent

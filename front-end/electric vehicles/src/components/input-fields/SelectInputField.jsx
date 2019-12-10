@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field, ErrorMessage } from 'formik';
+import PropTypes from 'prop-types';
 
 const SelectInputField = ({ name, label, options }) => {
 
@@ -15,4 +16,11 @@ const SelectInputField = ({ name, label, options }) => {
         </div>
     )
 }
+
+SelectInputField.propTypes = {
+    name: PropTypes.string,
+    label: PropTypes.string,
+    options: PropTypes.array
+}
+
 export default SelectInputField

@@ -38,7 +38,7 @@ class DataService {
 
     getData(url) {
         let token = '';
-        
+
         if (Cookie.get('token') !== undefined) {
             token = Cookie.get('token');
         }
