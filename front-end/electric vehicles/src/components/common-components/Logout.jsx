@@ -8,7 +8,7 @@ const Logout = () => {
     }
 
     return (
-        <div className="text-center" style={styles}>
+        <div className="text-center text-white" style={styles}>
             <h1 >You are log out</h1>
         </div>
     )

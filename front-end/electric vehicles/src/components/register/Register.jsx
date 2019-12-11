@@ -37,7 +37,7 @@ const Register = (props) => {
 
     return (
         <div className="mx-auto w-50">
-            <h2 className='text-center'>Register</h2>
+            <h2 className='text-center text-white'>Register</h2>
             <Formik
                 initialValues={{ username, password, email, confirmPassword }}
                 onSubmit={handleSubmit}

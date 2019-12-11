@@ -48,7 +48,7 @@ const Login = (props) => {
     return (
         <div className="d-flex justify-content-center">
             <div className="w-50 py-5">
-                <h2 className='text-center'>Login</h2>
+                <h2 className='text-center text-white'>Login</h2>
                 <Formik
                     initialValues={{ username, password }}
                     onSubmit={handleSubmit}

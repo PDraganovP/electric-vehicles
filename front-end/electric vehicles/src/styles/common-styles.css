@@ -1,4 +1,26 @@
 .table .data-row td,
 .table .data-row th {
   vertical-align: middle;
+  color:black;
+}
+
+.bg {
+  background-image: url("https://fsmedia.imgix.net/d8/7f/05/87/c9ac/4d13/9ba8/8d56bd874d6f/screenshot-2017-11-17-112818png.png#image");
+  background-size: cover; 
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.bg-img {
+  background-image: url("https://www.motortrend.com/uploads/sites/5/2019/11/Tesla-Cybertruck-electric-pickup-lights-on.jpg?fit=around%7C875:492");
+  background-size: cover; 
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
+  background-size: cover;
+  background-attachment: fixed; 
+ 
 }
