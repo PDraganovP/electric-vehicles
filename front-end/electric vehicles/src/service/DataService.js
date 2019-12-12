@@ -2,12 +2,16 @@ import Cookie from 'js-cookie';
 
 class DataService {
 
-    postData(data, url) {
-
+    getToken() {
         let token = '';
         if (Cookie.get('token') !== undefined) {
             token = Cookie.get('token');
         }
+        return token
+    }
+
+    postData(data, url) {
+        let token = this.getToken();
 
         return fetch(url, {
             method: 'POST',
@@ -20,11 +24,7 @@ class DataService {
     }
 
     patchData(data, url) {
-
-        let token = '';
-        if (Cookie.get('token') !== undefined) {
-            token = Cookie.get('token');
-        }
+        let token = this.getToken();
 
         return fetch(url, {
             method: 'PATCH',
@@ -37,11 +37,7 @@ class DataService {
     }
 
     getData(url) {
-        let token = '';
-
-        if (Cookie.get('token') !== undefined) {
-            token = Cookie.get('token');
-        }
+        let token = this.getToken();
 
         return fetch(url, {
             method: 'GET',

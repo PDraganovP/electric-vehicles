@@ -4,6 +4,7 @@ import Table from '../table/Table';
 import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
+import Loader from '../loader/Loader';
 import '../../styles/common-styles.css';
 
 class AllUsers extends React.Component {
@@ -14,7 +15,8 @@ class AllUsers extends React.Component {
             message: '',
             username: '',
             show: false,
-            delete: ''
+            delete: '',
+            isLoading: false
         }
     }
 
@@ -23,13 +25,17 @@ class AllUsers extends React.Component {
     }
 
     getAllUsers = () => {
+        this.setState({
+            isLoading: true
+        })
         let url = 'http://localhost:8080/users/all';
         DataService.getData(url)
             .then(response => {
                 let message = response.message;
                 if (message === undefined) {
                     this.setState({
-                        users: response
+                        users: response,
+                        isLoading: false
                     })
                 } else {
                     this.setState({
@@ -45,8 +51,6 @@ class AllUsers extends React.Component {
         let buttonId = event.target.id;
         let role = buttonId.split('-')[0];
         let userId = event.target.parentNode.id;
-        console.log('role', role);
-        console.log('userId', userId);
         let url = 'http://localhost:8080/users/set-' + role + '/' + userId;
 
         DataService.postData('', url)
@@ -56,8 +60,6 @@ class AllUsers extends React.Component {
                     this.getAllUsers();
 
                 }
-                console.log('changed', JSON.stringify(response));
-
             }).catch(error => console.log('Error', error))
     }
 
@@ -125,7 +127,7 @@ class AllUsers extends React.Component {
             handleClose: this.handleClose,
         }
 
-        let { users } = this.state;
+        let { users, isLoading } = this.state;
         let usersRows = users.map((user, index) =>
             <tr key={user.id} className='data-row'>
                 <td>{index + 1}</td>
@@ -146,12 +148,13 @@ class AllUsers extends React.Component {
 
         return (
             <div className="mx-auto w-75">
-                <Table tableHeading='All users' >
-                    <TableHead cells={cells} />
-                    <TableBody>
-                        {usersRows}
-                    </TableBody>
-                </Table>
+                {isLoading ? <Loader /> :
+                    <Table tableHeading='All users' >
+                        <TableHead cells={cells} />
+                        <TableBody>
+                            {usersRows}
+                        </TableBody>
+                    </Table>}
                 <ModalComponent {...props} />
                 <h4 className='text-center'>{this.state.message}</h4>
             </div>

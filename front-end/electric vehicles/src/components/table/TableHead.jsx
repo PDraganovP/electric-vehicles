@@ -14,6 +14,3 @@ const TableHead = (props) => {
 
 export default TableHead
 
-/* const cells = ['#', 'Manufacturer ', 'Model ', 'Electric vehicle type', 'Top speed',
-'Nominal range', 'Market release', 'Payload capacity', 'Number of axel', 'Edit ']; */
-

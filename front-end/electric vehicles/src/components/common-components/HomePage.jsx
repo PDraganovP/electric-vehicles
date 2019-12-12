@@ -6,7 +6,7 @@ const HomePage = () => {
     const username = useContext(UserContext);
 
     return (
-        <div className=''>
+        <div>
         </div>
     )
 }
