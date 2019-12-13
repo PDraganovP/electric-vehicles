@@ -5,6 +5,8 @@ import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
+import { findRole, getUsersTableHeadCells } from './Utils';
 import '../../styles/common-styles.css';
 
 class AllUsers extends React.Component {
@@ -22,6 +24,12 @@ class AllUsers extends React.Component {
 
     componentDidMount() {
         this.getAllUsers();
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getAllUsers = () => {
@@ -84,18 +92,6 @@ class AllUsers extends React.Component {
             })
     }
 
-    findRole(user) {
-        let authorities = user.authorities;
-        let containsAdmin = authorities.includes('ROLE_ADMIN');
-        let containsModerator = authorities.includes('ROLE_MODERATOR');
-        if (containsModerator && containsAdmin) {
-            return 'admin';
-        } else if (containsModerator && (!containsAdmin)) {
-            return 'moderator';
-        }
-        return 'user';
-    }
-
     handleClose = () => {
         this.setState({
             show: false
@@ -127,24 +123,24 @@ class AllUsers extends React.Component {
             handleClose: this.handleClose,
         }
 
-        let { users, isLoading } = this.state;
+        let { users, isLoading, message } = this.state;
         let usersRows = users.map((user, index) =>
             <tr key={user.id} className='data-row'>
                 <td>{index + 1}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
-                <td>{this.findRole(user)}</td>
+                <td>{findRole(user)}</td>
                 <td id={user.id}>
-                    {!(this.findRole(user) === 'admin') && <button id={"admin-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Admin</button>}
-                    {!(this.findRole(user) === 'moderator') && <button id={"moderator-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Moderator</button>}
-                    {!(this.findRole(user) === 'user') && <button id={"user-" + index} type="button" className="btn btn-primary" onClick={this.changeAccess}>User</button>}
+                    {!(findRole(user) === 'admin') && <button id={"admin-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Admin</button>}
+                    {!(findRole(user) === 'moderator') && <button id={"moderator-" + index} type="button" className="btn btn-primary mx-1" onClick={this.changeAccess}>Moderator</button>}
+                    {!(findRole(user) === 'user') && <button id={"user-" + index} type="button" className="btn btn-primary" onClick={this.changeAccess}>User</button>}
                 </td>
                 <td>
                     <button id={user.username + "/" + user.id} type="button" className="btn btn-primary" onClick={this.handleShow}>Delete</button>
                 </td>
             </tr>
         )
-        let cells = ['#', 'Username ', 'Email ', 'User role', 'Change user role', 'Delete'];
+        let cells = getUsersTableHeadCells();
 
         return (
             <div className="mx-auto w-75">
@@ -156,7 +152,7 @@ class AllUsers extends React.Component {
                         </TableBody>
                     </Table>}
                 <ModalComponent {...props} />
-                <h4 className='text-center'>{this.state.message}</h4>
+                <Message message={message} deleteMessage={this.deleteMessage} />
             </div>
         )
     }

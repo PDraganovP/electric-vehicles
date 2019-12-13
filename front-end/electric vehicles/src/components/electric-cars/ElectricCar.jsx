@@ -7,6 +7,7 @@ import SelectInputField from '../input-fields/SelectInputField';
 import RadioInputField from '../input-fields/RadioInputField';
 import RadioInputFieldWrapper from '../input-fields/RadioInputFieldWrapper';
 import DatePickerInputField from '../input-fields/DatePickerInputField';
+import Message from '../message/Message';
 import { formSchema } from './CarFormValidation';
 import { getDate, parseToEnum } from './Utils';
 import Loader from '../loader/Loader';
@@ -40,6 +41,12 @@ class ElectricCar extends React.Component {
         if (id !== undefined) {
             this.getCar(id);
         }
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getCar = (id) => {
@@ -144,7 +151,7 @@ class ElectricCar extends React.Component {
     }
 
     render() {
-        let { formInitialValues, electricVehicleTypes, isLoading } = this.state;
+        const { formInitialValues, electricVehicleTypes, isLoading, message } = this.state;
         const options = electricVehicleTypes.map(electricVehicleType =>
             <option value={electricVehicleType.type} key={electricVehicleType.type}>
                 {electricVehicleType.type}
@@ -182,7 +189,7 @@ class ElectricCar extends React.Component {
                                     <RadioInputField name="dualMotor" value="false" label="False" />
                                 </RadioInputFieldWrapper>
                                 <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
-                                <h3 className='text-center'>{this.state.message}</h3>
+                                <Message message={message} deleteMessage={this.deleteMessage} />
                                 <button className="btn btn-success" type="submit">Save</button>
                                 <Link to='/show-cars' className="btn btn-success ml-1">Back</Link>
                             </Form>

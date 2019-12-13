@@ -1,13 +1,27 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { UserContext } from '../user-provider/UserProvider';
 import '../../styles/common-styles.css';
 
-const HomePage = () => {
-    const username = useContext(UserContext);
+import UserProvider from '../user-provider/UserProvider';
 
+const HomePage = () => {
+    let styles = {
+        height: '10vh',
+        paddingTop: '30vh',
+        paddingBottom: '60vh'
+    }
     return (
-        <div>
-        </div>
+        <UserProvider>
+            <div className='text-center text-white' style={styles}>
+                <UserContext.Consumer>
+                    {(username) => {
+                        if (username) {
+                            return <h1 >Welcome, {username}</h1>
+                        }
+                    }}
+                </UserContext.Consumer>
+            </div>
+        </UserProvider>
     )
 }
 

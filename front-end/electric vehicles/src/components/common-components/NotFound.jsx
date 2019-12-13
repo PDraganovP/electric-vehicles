@@ -9,7 +9,7 @@ const NotFound = () => {
 
     return (
         <div className="text-center" style={styles}>
-            <h1 >Not found</h1>
+            <h1>Not found</h1>
         </div>
     )
 }

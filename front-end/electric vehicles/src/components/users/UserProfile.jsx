@@ -1,6 +1,7 @@
 import React from 'react';
-import DataService from '../../service/DataService';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
+import DataService from '../../service/DataService';
 
 class UserProfile extends React.Component {
     constructor(props) {
@@ -15,6 +16,12 @@ class UserProfile extends React.Component {
 
     componentDidMount() {
         this.getUserProfile();
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getUserProfile = () => {
@@ -41,7 +48,7 @@ class UserProfile extends React.Component {
     }
 
     render() {
-        let { username, email, isLoading } = this.state;
+        let { username, email, isLoading, message } = this.state;
         return (
             <div className="text-center mt-5 text-white">
                 <h1>Profile</h1>
@@ -52,7 +59,7 @@ class UserProfile extends React.Component {
                             <h2>{username}</h2>
                             <h1>Email</h1>
                             <h2>{email}</h2>
-                            <h4 className='text-center'>{this.state.message}</h4>
+                            <Message message={message} deleteMessage={this.deleteMessage} />
                         </div>
                     </React.Fragment>}
             </div>

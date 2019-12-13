@@ -1,10 +1,11 @@
 import React from 'react';
 import DataService from '../../service/DataService';
-import SelectInputField from './SelectInputField';
-import Canvas from './Canvas';
-import Main from './Main';
-import ContainerWrapper from './ContainerWrapper';
-import Button from './Button';
+import SelectInputField from '../canvas-elements/SelectInputField';
+import Canvas from '../canvas-elements/Canvas';
+import Main from '../canvas-elements/Main';
+import ContainerWrapper from '../canvas-elements/ContainerWrapper';
+import Button from '../canvas-elements/Button';
+import Message from '../message/Message';
 import { drawDiagram } from './Utils';
 import styles from '../../styles.module.css';
 
@@ -19,6 +20,12 @@ class CompareElectricCars extends React.Component {
 
     componentDidMount() {
         this.getVehicles();
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getVehicles() {
@@ -44,7 +51,7 @@ class CompareElectricCars extends React.Component {
     }
 
     render() {
-        let { vehicles } = this.state;
+        let { vehicles, message } = this.state;
         let options = vehicles.map(vehicle =>
             <option value={vehicle.nominalRange} key={vehicle.id} >{vehicle.model}</option>
         )
@@ -56,7 +63,7 @@ class CompareElectricCars extends React.Component {
                     <SelectInputField options={options} className={[styles.dot, styles.dotRightColor].join(' ')} name='rightColumn' id='rightColumn' label='Car' />
                 </ContainerWrapper>
                 <Button name='Compare' handelClick={this.handelClick} />
-                <h4 className='text-center'>{this.state.message}</h4>
+                <Message message={message} deleteMessage={this.deleteMessage} />
             </Main>
         )
     }

@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
-import { formSchema } from './LoginFormValidation'
+import { formSchema } from './LoginFormValidation';
 import TextInputField from '../input-fields/TextInputField';
+import Message from '../message/Message';
 import Cookie from 'js-cookie';
-import DataService from '../../service/DataService'
+import DataService from '../../service/DataService';
 
 const Login = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+
+    const deleteMessage = () => {
+        setMessage('');
+    }
 
     const handleSubmit = (values) => {
         let user = {
@@ -60,7 +65,7 @@ const Login = (props) => {
                     <Form >
                         <TextInputField placeholder="Enter username" label="Username" name="username" />
                         <TextInputField placeholder="Enter password" label="Password" name="password" type="password" />
-                        <h5 className="text-center" style={{ color: 'red' }} >{message}</h5>
+                        <Message message={message} deleteMessage={deleteMessage} />
                         <button className="btn btn-success" type="submit">Login</button>
                     </Form>
                 </Formik>

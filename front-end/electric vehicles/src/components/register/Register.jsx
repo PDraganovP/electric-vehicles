@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Formik } from 'formik';
 import { formSchema } from './RegisterFormValidation'
 import TextInputField from '../input-fields/TextInputField';
+import Message from '../message/Message';
 import DataService from '../../service/DataService';
 
 const Register = (props) => {
@@ -10,6 +11,10 @@ const Register = (props) => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+
+    const deleteMessage = () => {
+        setMessage('');
+    }
 
     const handleSubmit = (values) => {
         let user = {
@@ -52,7 +57,7 @@ const Register = (props) => {
                     <TextInputField placeholder="Confirm password" label="Comfirm password" name="confirmPassword" type="password" />
                     <TextInputField placeholder="Enter email" label="Email address" name="email" type="email" />
                     <button type="submit" className="btn btn-success">Register</button>
-                    <h4 className="text-center">{message}</h4>
+                    <Message message={message} deleteMessage={deleteMessage} />
                 </Form>
             </Formik>
         </div>

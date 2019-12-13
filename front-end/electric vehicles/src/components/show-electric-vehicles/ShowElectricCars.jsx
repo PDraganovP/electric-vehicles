@@ -7,6 +7,7 @@ import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
 import '../../styles/common-styles.css';
 
 class ShowElectricCars extends React.Component {
@@ -24,6 +25,12 @@ class ShowElectricCars extends React.Component {
 
     componentDidMount() {
         this.getVehicles();
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getVehicles() {
@@ -99,7 +106,7 @@ class ShowElectricCars extends React.Component {
             handleClose: this.handleClose,
         }
 
-        let { vehicles, isLoading } = this.state;
+        let { vehicles, isLoading, message } = this.state;
         let vehicleRow = vehicles.map((vehicle, index) =>
             <tr key={vehicle.id} className='data-row'>
                 <td>{index + 1}</td>
@@ -128,6 +135,7 @@ class ShowElectricCars extends React.Component {
                         </TableBody>
                     </Table>}
                 <ModalComponent {...props} />
+                <Message message={message} deleteMessage={this.deleteMessage} />
             </div >
         )
     }

@@ -2,8 +2,9 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { formSchema } from './EditUserFormValidation';
 import TextInputField from '../input-fields/TextInputField';
-import DataService from '../../service/DataService';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
+import DataService from '../../service/DataService';
 
 class EditUser extends React.Component {
     constructor(props) {
@@ -19,6 +20,12 @@ class EditUser extends React.Component {
             message: '',
             isLoading: false
         }
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     componentDidMount() {
@@ -87,7 +94,7 @@ class EditUser extends React.Component {
     }
 
     render() {
-        let { formInitialValues, isLoading } = this.state;
+        const { formInitialValues, isLoading, message } = this.state;
 
         return (
             <div className="mx-auto w-50">
@@ -108,7 +115,7 @@ class EditUser extends React.Component {
                             <TextInputField placeholder="Confirm password" label="Comfirm password" name="confirmPassword" type="password" />
                             <TextInputField placeholder="Enter email" label="Email address" name="email" type="email" />
                             <button className="btn btn-success" type="submit">Save</button>
-                            <h4 className='text-center'>{this.state.message}</h4>
+                            <Message message={message} deleteMessage={this.deleteMessage} />
                         </Form>
                     </Formik>}
             </div>

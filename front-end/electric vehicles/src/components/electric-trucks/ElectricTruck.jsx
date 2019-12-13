@@ -4,6 +4,7 @@ import { Formik, Form } from 'formik';
 import DataService from '../../service/DataService';
 import TextInputField from '../input-fields/TextInputField';
 import SelectInputField from '../input-fields/SelectInputField';
+import Message from '../message/Message';
 import { getDate, parseToEnum } from '../electric-cars/Utils';
 import DatePickerInputField from '../input-fields/DatePickerInputField';
 import { formSchema } from './TruckFormValidation';
@@ -38,6 +39,11 @@ class ElectricTruck extends React.Component {
         }
     }
 
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
+    }
 
     getElectricTruck = (id) => {
         this.setState({
@@ -122,7 +128,7 @@ class ElectricTruck extends React.Component {
     }
 
     render() {
-        let { formInitialValues, electricVehicleTypes, isLoading } = this.state;
+        const { formInitialValues, electricVehicleTypes, isLoading, message } = this.state;
         const options = electricVehicleTypes.map(electricVehicleType =>
             <option value={electricVehicleType.type} key={electricVehicleType.type}>{electricVehicleType.type}
             </option>
@@ -153,7 +159,7 @@ class ElectricTruck extends React.Component {
                                 <TextInputField placeholder="Enter payload capacity" label="Payload capacity" name="payloadCapacity" />
                                 <TextInputField placeholder="Enter number of axel" label="Number of axel" name="numberOfAxel" />
                                 <SelectInputField name='electricVehicleType' label='Choose car type' options={options} />
-                                <h3 className='text-center'>{this.state.message}</h3>
+                                <Message message={message} deleteMessage={this.deleteMessage} />
                                 <button className="btn btn-success" type="submit">Save</button>
                                 <Link to='/show-trucks' className="btn btn-success ml-1">Back</Link>
                             </Form>

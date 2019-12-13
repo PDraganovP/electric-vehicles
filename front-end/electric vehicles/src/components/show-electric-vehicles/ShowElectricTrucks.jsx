@@ -7,6 +7,7 @@ import TableHead from '../table/TableHead';
 import TableBody from '../table/TableBody';
 import ModalComponent from '../modal/ModalComponent';
 import Loader from '../loader/Loader';
+import Message from '../message/Message';
 import '../../styles/common-styles.css';
 
 class ShowElectricTrucks extends React.Component {
@@ -24,6 +25,12 @@ class ShowElectricTrucks extends React.Component {
 
     componentDidMount() {
         this.getVehicles();
+    }
+
+    deleteMessage = () => {
+        this.setState({
+            message: ''
+        })
     }
 
     getVehicles() {
@@ -93,15 +100,15 @@ class ShowElectricTrucks extends React.Component {
         const isAdmin = DataService.isAdmin()
         const isModerator = DataService.isModerator()
 
-        let props = {
+        const props = {
             show: this.state.show,
             record: this.state.model,
             handleDelete: this.handleDelete,
             handleClose: this.handleClose,
         }
 
-        let { vehicles, isLoading } = this.state;
-        let vehicleRow = vehicles.map((vehicle, index) =>
+        const { vehicles, isLoading, message } = this.state;
+        const vehicleRow = vehicles.map((vehicle, index) =>
             <tr key={vehicle.id} className='data-row'>
                 <td>{index + 1}</td>
                 <td>{vehicle.manufacturer}</td>
@@ -131,6 +138,7 @@ class ShowElectricTrucks extends React.Component {
                         </TableBody>
                     </Table>}
                 <ModalComponent {...props} />
+                <Message message={message} deleteMessage={this.deleteMessage} />
             </div>
         )
     }
